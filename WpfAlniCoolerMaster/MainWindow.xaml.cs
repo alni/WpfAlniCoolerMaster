@@ -64,12 +64,18 @@ namespace WpfAlniCoolerMaster
             string dateTime = now.ToShortDateString() + " " + now.ToLongTimeString();
             tbSystemTime.Text = dateTime;
 
+            //string timeNow = Sharp_SDK.SDK.GetNowTime();
+            //tbSystemTime.Text = timeNow;
+
             // TODO: Implement CPU Usage Info
+            long cpuUsage = Sharp_SDK.SDK.GetNowCPUUsage();
+            tbCPUUsage.Text = cpuUsage.ToString("F0");
 
             // TODO: Implement RAM USage Info
+            int ramUsage = Sharp_SDK.SDK.GetRamUsage();
+            tbRAMUsage.Text = ramUsage.ToString("F0");
 
-
-            float volumePeekValue = Sharp_SDK.SDK.GetNowVolumePeekValue();
+            float volumePeekValue = Sharp_SDK.SDK.GetNowVolumePeekValue() * 100;
             tbVolumePeek.Text = volumePeekValue.ToString("F0");
         }
 

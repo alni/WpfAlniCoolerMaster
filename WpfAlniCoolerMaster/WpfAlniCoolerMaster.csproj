@@ -115,7 +115,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CoolerMaster-SDK-Wrapper-master\Sharp-SDK\Sharp-SDK.csproj">
+    <ProjectReference Include="..\CoolerMaster-SDK-Wrapper\Sharp-SDK\Sharp-SDK.csproj">
       <Project>{cb4e1821-74b5-4a3b-a1ee-56203c70d551}</Project>
       <Name>Sharp-SDK</Name>
     </ProjectReference>
