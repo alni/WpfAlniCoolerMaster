@@ -1,6 +1,13 @@
 # WpfAlniCoolerMaster
 
-WPF GUI implementation of the Cooler Master SDK Lighting example project.
+WPF GUI (C#) implementation of the Cooler Master SDK Lighting example project.
+
+
+## Planned Features ##
+
+* [ ] Ability to save/load default settings
+* [ ] Ability to load/store custom settings/profiles
+* [ ] Ability to bind profiles to game/process (only applied when process is active and in foreground; default settings otherwise)
 
 
 ## References/Credits ##
