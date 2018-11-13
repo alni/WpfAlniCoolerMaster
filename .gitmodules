@@ -1,0 +1,3 @@
+[submodule "CoolerMaster-SDK-Wrapper"]
+	path = CoolerMaster-SDK-Wrapper
+	url = https://github.com/alni/CoolerMaster-SDK-Wrapper.git
