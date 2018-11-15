@@ -44,6 +44,13 @@ namespace WpfAlniCoolerMaster
             {
                 keyColors[i] = new Sharp_SDK.KEY_COLOR[maxLEDColumn];
             }
+            for (int i = 0; i < keyColors.Length; i++)
+            {
+                for (int j = 0; j < keyColors[i].Length; j++)
+                {
+                    keyColors[i][j] = new Sharp_SDK.KEY_COLOR(0, 0, 0);
+                }
+            }
             colorMatrix = new Sharp_SDK.COLOR_MATRIX(keyColors);
             //Sharp_SDK.SDK.SetControlDevice(Sharp_SDK.DEVICE_INDEX.DEV_MKeys_M_White);
             initialized = true;
@@ -60,7 +67,7 @@ namespace WpfAlniCoolerMaster
 
         private void ASysInfoTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            //Dispatcher.BeginInvoke(new Action(() => GetSysInfo() ));
+            Dispatcher.BeginInvoke(new Action(() => GetSysInfo() ));
         }
 
         [HandleProcessCorruptedStateExceptions]
@@ -76,9 +83,9 @@ namespace WpfAlniCoolerMaster
             // TODO: Implement CPU Usage Info
             long cpuUsage = Sharp_SDK.SDK.GetNowCPUUsage();
             tbCPUUsage.Text = cpuUsage.ToString();
-            ToolTip toolTip = new ToolTip();
-            toolTip.Content = cpuUsage.ToString();
-            tbCPUUsage.ToolTip = toolTip;
+            //ToolTip toolTip = new ToolTip();
+            //toolTip.Content = cpuUsage.ToString();
+            //tbCPUUsage.ToolTip = toolTip;
 
             // TODO: Implement RAM USage Info
             int ramUsage = Sharp_SDK.SDK.GetRamUsage();
@@ -189,13 +196,23 @@ namespace WpfAlniCoolerMaster
         // TODO: Rename function to "ButtonSetKeyColorMatrix_Click"
         private void ButtonSetKeyColorMatrix_Click(object sender, RoutedEventArgs e)
         {
-            Sharp_SDK.SDK.SetAllLedColor(colorMatrix);
+            //Sharp_SDK.SDK.SetAllLedColor(colorMatrix);
+            Sharp_SDK.KEY_COLOR[][] keyColors = colorMatrix.KeyColor;
+            for (int i = 0; i < keyColors.Length; i++)
+            {
+                for (int j = 0; j < keyColors[i].Length; j++)
+                {
+                    Sharp_SDK.KEY_COLOR keyColor = colorMatrix.KeyColor[i][j];
+
+                    Sharp_SDK.SDK.SetLedColor(i, j, keyColor.r, keyColor.g, keyColor.b);
+                }
+            }
         }
 
         // TODO: Rename function to "ButtonSetFullKeyColor_Click"
         private void ButtonSetFullKeyColor_Click(object sender, RoutedEventArgs e)
         {
-            byte redColor = GetColorValue(tbLEDRed.Text);
+            byte redColor = GetColorValue(tbLEDRed_All.Text);
             byte greenColor = GetColorValue(tbLEDGreen_All.Text);
             byte blueColor = GetColorValue(tbLEDBlue_All.Text);
 
