@@ -189,6 +189,7 @@ namespace WpfAlniCoolerMaster
             int keyColumnIndex = cbLEDColumn.SelectedIndex;
 
             Sharp_SDK.KEY_COLOR keyColor = colorMatrix.KeyColor[keyRowIndex][keyColumnIndex];
+            keyColor = normalizeColors(keyColor);
 
             Sharp_SDK.SDK.SetLedColor(keyRowIndex, keyColumnIndex, keyColor.r, keyColor.g, keyColor.b);
         }
@@ -203,6 +204,7 @@ namespace WpfAlniCoolerMaster
                 for (int j = 0; j < keyColors[i].Length; j++)
                 {
                     Sharp_SDK.KEY_COLOR keyColor = colorMatrix.KeyColor[i][j];
+                    keyColor = normalizeColors(keyColor);
 
                     Sharp_SDK.SDK.SetLedColor(i, j, keyColor.r, keyColor.g, keyColor.b);
                 }
@@ -216,7 +218,10 @@ namespace WpfAlniCoolerMaster
             byte greenColor = GetColorValue(tbLEDGreen_All.Text);
             byte blueColor = GetColorValue(tbLEDBlue_All.Text);
 
-            var success = Sharp_SDK.SDK.SetFullLedColor(redColor, greenColor, blueColor);
+            Sharp_SDK.KEY_COLOR keyColor = new Sharp_SDK.KEY_COLOR(redColor, greenColor, blueColor);
+            keyColor = normalizeColors(keyColor);
+
+            var success = Sharp_SDK.SDK.SetFullLedColor(keyColor.r, keyColor.g, keyColor.b);
             if (success == false)
             {
                 MessageBox.Show("SetFullLedColor Failed!");
@@ -253,8 +258,25 @@ namespace WpfAlniCoolerMaster
             keyColor.r = redColor;
             keyColor.g = greenColor;
             keyColor.b = blueColor;
+            keyColor = normalizeColors(keyColor);
 
             colorMatrix.KeyColor[row][column] = keyColor;
+        }
+
+        private Sharp_SDK.KEY_COLOR normalizeColors(Sharp_SDK.KEY_COLOR keyColor)
+        {
+            int selectedIndex = cbDeviceSelect.SelectedIndex;
+            Sharp_SDK.DEVICE_INDEX selectedDevice = (Sharp_SDK.DEVICE_INDEX)selectedIndex;
+            switch (selectedDevice)
+            {
+                case Sharp_SDK.DEVICE_INDEX.DEV_MKeys_L_White:
+                case Sharp_SDK.DEVICE_INDEX.DEV_MKeys_M_White:
+                case Sharp_SDK.DEVICE_INDEX.DEV_MKeys_S_White:
+                    keyColor.g = keyColor.r;
+                    keyColor.b = keyColor.r;
+                    break;
+            }
+            return keyColor;
         }
 
         private byte GetColorValue(string strColor)
@@ -289,6 +311,7 @@ namespace WpfAlniCoolerMaster
                     column = cbLEDColumn.SelectedIndex;
                 }
                 Sharp_SDK.KEY_COLOR keyColor = colorMatrix.KeyColor[row][column];
+                keyColor = normalizeColors(keyColor);
 
                 tbLEDRed.Text = keyColor.r.ToString("F0");
                 tbLEDGreen.Text = keyColor.g.ToString("F0");
