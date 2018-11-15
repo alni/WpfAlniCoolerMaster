@@ -22,10 +22,14 @@ namespace WpfAlniCoolerMaster
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        public static readonly byte MAX_COLOR_VALUE = 255;
         private System.Timers.Timer aSysInfoTimer;
 
         private bool ledControlEnabled = true;
         private Sharp_SDK.COLOR_MATRIX colorMatrix;
+
+        private bool initialized = false;
 
         public MainWindow()
         {
@@ -41,7 +45,8 @@ namespace WpfAlniCoolerMaster
                 keyColors[i] = new Sharp_SDK.KEY_COLOR[maxLEDColumn];
             }
             colorMatrix = new Sharp_SDK.COLOR_MATRIX(keyColors);
-            Sharp_SDK.SDK.SetControlDevice(Sharp_SDK.DEVICE_INDEX.DEV_MKeys_M_White);
+            //Sharp_SDK.SDK.SetControlDevice(Sharp_SDK.DEVICE_INDEX.DEV_MKeys_M_White);
+            initialized = true;
         }
 
         private void SetSysInfoTimer()
@@ -52,12 +57,13 @@ namespace WpfAlniCoolerMaster
             aSysInfoTimer.Enabled = true;
         }
 
+
         private void ASysInfoTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            Dispatcher.BeginInvoke(new Action(() => GetSysInfo() ));
-            
+            //Dispatcher.BeginInvoke(new Action(() => GetSysInfo() ));
         }
 
+        [HandleProcessCorruptedStateExceptions]
         void GetSysInfo()
         {
             DateTime now = DateTime.Now;
@@ -69,11 +75,14 @@ namespace WpfAlniCoolerMaster
 
             // TODO: Implement CPU Usage Info
             long cpuUsage = Sharp_SDK.SDK.GetNowCPUUsage();
-            tbCPUUsage.Text = cpuUsage.ToString("F0");
+            tbCPUUsage.Text = cpuUsage.ToString();
+            ToolTip toolTip = new ToolTip();
+            toolTip.Content = cpuUsage.ToString();
+            tbCPUUsage.ToolTip = toolTip;
 
             // TODO: Implement RAM USage Info
             int ramUsage = Sharp_SDK.SDK.GetRamUsage();
-            tbRAMUsage.Text = ramUsage.ToString("F0");
+            tbRAMUsage.Text = ramUsage.ToString();
 
             float volumePeekValue = Sharp_SDK.SDK.GetNowVolumePeekValue() * 100;
             tbVolumePeek.Text = volumePeekValue.ToString("F0");
@@ -94,6 +103,11 @@ namespace WpfAlniCoolerMaster
 
             Sharp_SDK.DEVICE_INDEX selectedDevice = (Sharp_SDK.DEVICE_INDEX)selectedIndex;
             Sharp_SDK.SDK.SetControlDevice(selectedDevice);
+            Sharp_SDK.SDK.EnableLedControl(ledControlEnabled);
+            if (ledControlEnabled)
+            {
+                Sharp_SDK.SDK.RefreshLed(true);
+            }
         }
 
         // TODO: Rename function to "ButtonDeviceLayout_Click"
@@ -109,42 +123,45 @@ namespace WpfAlniCoolerMaster
         private void ButtonLEDControlToggle_Click(object sender, RoutedEventArgs e)
         {
             ledControlEnabled = !ledControlEnabled;
-            if (ledControlEnabled)
+            try
             {
-                btnLedControl.Content = "Disable";
-                btnLedEffect.IsEnabled = false;
-                btnLEDSingleKey.IsEnabled = true;
-                btnLEDAllKeys.IsEnabled = true;
-                btnLEDColor_All.IsEnabled = true;
-                try
+                Sharp_SDK.SDK.EnableLedControl(ledControlEnabled);
+                if (ledControlEnabled)
                 {
-                    Sharp_SDK.SDK.EnableLedControl(true);
-                } catch (AccessViolationException ex)
-                {
-                    //MessageBox.Show(ex.Message);
-                }
-            } else
-            {
-                btnLedControl.Content = "Enable";
-                btnLedEffect.IsEnabled = true;
-                btnLEDSingleKey.IsEnabled = false;
-                btnLEDAllKeys.IsEnabled = false;
-                btnLEDColor_All.IsEnabled = false;
-                try
-                {
-                    Sharp_SDK.SDK.EnableLedControl(false);
-                }
-                catch (AccessViolationException ex)
-                {
-                    //MessageBox.Show(ex.Message);
+                    Sharp_SDK.SDK.RefreshLed(true);
                 }
             }
+            catch (AccessViolationException ex)
+            {
+                //MessageBox.Show(ex.Message);
+            }
+            
+
+            if (ledControlEnabled == true)
+            {
+                btnLedControl.Content = "Disable";
+            }
+            else
+            {
+                btnLedControl.Content = "Enable";
+            }
+            
+            btnLedEffect.IsEnabled = !ledControlEnabled;
+
+            btnLEDSingleKey.IsEnabled = ledControlEnabled;
+            btnLEDAllKeys.IsEnabled = ledControlEnabled;
+            btnLEDColor_All.IsEnabled = ledControlEnabled;
         }
 
         // TODO: Rename function to "ButtonLedEffect_Click"
         private void ButtonLedEffect_Click(object sender, RoutedEventArgs e)
         {
             Sharp_SDK.EFF_INDEX effIndex = (Sharp_SDK.EFF_INDEX)cbLEDEffectChoose.SelectedIndex;
+            bool success = Sharp_SDK.SDK.SwitchLedEffect(effIndex);
+            if (success == false)
+            {
+                MessageBox.Show("No Effect or Fail");
+            }
         }
 
         /// <summary>
@@ -178,14 +195,15 @@ namespace WpfAlniCoolerMaster
         // TODO: Rename function to "ButtonSetFullKeyColor_Click"
         private void ButtonSetFullKeyColor_Click(object sender, RoutedEventArgs e)
         {
-            byte redColor;
-            byte greenColor;
-            byte blueColor;
-            Byte.TryParse(tbLEDRed_All.Text, out redColor);
-            Byte.TryParse(tbLEDGreen_All.Text, out greenColor);
-            Byte.TryParse(tbLEDBlue_All.Text, out blueColor);
+            byte redColor = GetColorValue(tbLEDRed.Text);
+            byte greenColor = GetColorValue(tbLEDGreen_All.Text);
+            byte blueColor = GetColorValue(tbLEDBlue_All.Text);
 
-            Sharp_SDK.SDK.SetFullLedColor(redColor, greenColor, blueColor);
+            var success = Sharp_SDK.SDK.SetFullLedColor(redColor, greenColor, blueColor);
+            if (success == false)
+            {
+                MessageBox.Show("SetFullLedColor Failed!");
+            }
         }
 
         private void CheckboxKeyEffect_Checked(object sender, RoutedEventArgs e)
@@ -211,12 +229,9 @@ namespace WpfAlniCoolerMaster
 
             Sharp_SDK.KEY_COLOR keyColor = colorMatrix.KeyColor[row][column];
 
-            byte redColor;
-            byte greenColor;
-            byte blueColor;
-            Byte.TryParse(tbLEDRed.Text, out redColor);
-            Byte.TryParse(tbLEDGreen.Text, out greenColor);
-            Byte.TryParse(tbLEDBlue.Text, out blueColor);
+            byte redColor = GetColorValue(tbLEDRed.Text);
+            byte greenColor = GetColorValue(tbLEDGreen.Text);
+            byte blueColor = GetColorValue(tbLEDBlue.Text);
 
             keyColor.r = redColor;
             keyColor.g = greenColor;
@@ -225,9 +240,43 @@ namespace WpfAlniCoolerMaster
             colorMatrix.KeyColor[row][column] = keyColor;
         }
 
+        private byte GetColorValue(string strColor)
+        {
+            byte color;
+            Byte.TryParse(strColor, out color);
+            if (color > MAX_COLOR_VALUE)
+            {
+                color = MAX_COLOR_VALUE;
+            }
+            else if (color < 0)
+            {
+                color = 0;
+            }
+            return color;
+        }
+
         private void TextBoxLED_TextChanged_All(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void ComboBoxLED_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int row = 0;
+            int column = 0;
+            if (initialized == true)
+            {
+                if (cbLEDRow != null && cbLEDColumn != null)
+                {
+                    row = cbLEDRow.SelectedIndex;
+                    column = cbLEDColumn.SelectedIndex;
+                }
+                Sharp_SDK.KEY_COLOR keyColor = colorMatrix.KeyColor[row][column];
+
+                tbLEDRed.Text = keyColor.r.ToString("F0");
+                tbLEDGreen.Text = keyColor.g.ToString("F0");
+                tbLEDBlue.Text = keyColor.b.ToString("F0");
+            }
         }
     }
 }

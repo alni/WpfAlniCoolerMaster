@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="587" Width="587" MinWidth="587" MinHeight="587" SizeToContent="WidthAndHeight" Margin="0" Padding="0">
     <Grid Margin="0,0,10,0">
-        <Grid HorizontalAlignment="Left" Height="110" Margin="10,120,0,0" VerticalAlignment="Top" Width="559">
+        <Grid Height="110" Margin="10,120,0,0" VerticalAlignment="Top" Width="559">
             <Label Content="Select Device:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
             <ComboBox x:Name="cbDeviceSelect" HorizontalAlignment="Left" Margin="97,14,0,0" VerticalAlignment="Top" Width="190" SelectedIndex="0">
                 <ListBoxItem Content="MasterKeys Pro L"/>
@@ -64,15 +64,15 @@
             </ComboBox>
             <Button x:Name="btnLedEffect" Content="Set" HorizontalAlignment="Left" Margin="444,75,0,0" VerticalAlignment="Top" Width="75" Click="ButtonLedEffect_Click" IsEnabled="False"/>
         </Grid>
-        <GroupBox Header="Set LED color for every key" HorizontalAlignment="Left" Height="131" Margin="10,235,0,0" VerticalAlignment="Top" Width="559" Background="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}">
-            <Grid HorizontalAlignment="Left" Margin="10,0,-2,-12" VerticalAlignment="Top" Width="539" Height="121">
+        <GroupBox Header="Set LED color for every key" Height="131" Margin="10,235,0,0" VerticalAlignment="Top" Width="559" Background="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}">
+            <Grid Margin="10,0,0,0" Width="539" Height="121">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="34*"/>
                     <ColumnDefinition Width="505*"/>
                     <ColumnDefinition Width="0*"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="Row:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="38" Height="26"/>
-                <ComboBox x:Name="cbLEDRow" HorizontalAlignment="Left" Margin="19,14,0,0" VerticalAlignment="Top" Width="120" Grid.Column="1" Height="22" SelectedIndex="0">
+                <ComboBox x:Name="cbLEDRow" HorizontalAlignment="Left" Margin="19,14,0,0" VerticalAlignment="Top" Width="120" Grid.Column="1" Height="22" SelectedIndex="0" SelectionChanged="ComboBoxLED_SelectionChanged">
                     <ListBoxItem Content="0"/>
                     <ListBoxItem Content="1"/>
                     <ListBoxItem Content="2"/>
@@ -82,7 +82,7 @@
                     <ListBoxItem Content="6"/>
                 </ComboBox>
                 <Label Content="Column:" HorizontalAlignment="Left" Margin="150,10,0,0" VerticalAlignment="Top" Grid.Column="1" Height="26" Width="54"/>
-                <ComboBox x:Name="cbLEDColumn" HorizontalAlignment="Left" Margin="209,14,0,0" VerticalAlignment="Top" Width="120" Grid.Column="1" Height="22" SelectedIndex="0">
+                <ComboBox x:Name="cbLEDColumn" HorizontalAlignment="Left" Margin="209,14,0,0" VerticalAlignment="Top" Width="120" Grid.Column="1" Height="22" SelectedIndex="0"  SelectionChanged="ComboBoxLED_SelectionChanged">
                     <ListBoxItem Content="0"/>
                     <ListBoxItem Content="1"/>
                     <ListBoxItem Content="2"/>
@@ -118,8 +118,8 @@
                 <Button x:Name="btnLEDAllKeys" Content="Set ALL Key" HorizontalAlignment="Left" Margin="138,84,0,0" VerticalAlignment="Top" Width="75" Click="ButtonSetKeyColorMatrix_Click" Grid.Column="1" Height="20"/>
             </Grid>
         </GroupBox>
-        <GroupBox Header="Set All LED" HorizontalAlignment="Left" Height="104" Margin="10,371,0,0" VerticalAlignment="Top" Width="559" Background="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}">
-            <Grid HorizontalAlignment="Left" Margin="10,0,-2,-12" VerticalAlignment="Top" Width="539" Height="94">
+        <GroupBox Header="Set All LED" Height="104" Margin="10,371,0,0" VerticalAlignment="Top" Width="559" Background="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}">
+            <Grid Margin="10,0,0,0" Width="539" Height="94">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="44*"/>
@@ -135,12 +135,12 @@
         </GroupBox>
         <CheckBox x:Name="checkboxKeyEffect" Content="Key Effect" HorizontalAlignment="Left" Margin="10,489,0,0" VerticalAlignment="Top" Checked="CheckboxKeyEffect_Checked" Unchecked="CheckboxKeyEffect_Unchecked"/>
         <Label Content="PS: If Key Effect Function is enabled, the KEY_DOWN will be ignored." HorizontalAlignment="Left" Margin="28,509,0,0" VerticalAlignment="Top"/>
-        <GroupBox Header="System information" HorizontalAlignment="Left" Height="105" Margin="10,10,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}" Width="559">
-            <Grid HorizontalAlignment="Left" Margin="10,0,-2,-12" VerticalAlignment="Top" Height="95" Width="539">
+        <GroupBox Header="System information" Height="105" Margin="10,10,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}" Width="559">
+            <Grid Margin="10,0,0,0" Height="95" Width="539">
                 <Label Content="System Time:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
                 <TextBox x:Name="tbSystemTime" HorizontalAlignment="Left" Height="23" Margin="94,13,0,0" TextWrapping="Wrap" Text="2018-11-12 14:40:15" VerticalAlignment="Top" Width="120" IsEnabled="False"/>
                 <Label Content="CPU Usage:" HorizontalAlignment="Left" Margin="10,38,0,0" VerticalAlignment="Top"/>
-                <TextBox x:Name="tbCPUUsage" HorizontalAlignment="Left" Height="23" Margin="94,41,0,0" TextWrapping="Wrap" Text="-1" VerticalAlignment="Top" Width="42" IsEnabled="False"/>
+                <TextBox x:Name="tbCPUUsage" HorizontalAlignment="Left" Height="23" Margin="94,41,0,0" TextWrapping="Wrap" Text="-1" VerticalAlignment="Top" Width="42" IsEnabled="False" ToolTip="Test"/>
                 <Button Content="Status" HorizontalAlignment="Left" Margin="141,41,0,0" VerticalAlignment="Top" Width="75" Click="ButtonCPUStatus_Click"/>
                 <Label Content="RAM Usage:" HorizontalAlignment="Left" Margin="243,38,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.014,0.385"/>
                 <TextBox x:Name="tbRAMUsage" HorizontalAlignment="Left" Height="23" Margin="322,41,0,0" TextWrapping="Wrap" Text="47" VerticalAlignment="Top" Width="42" IsEnabled="False"/>
