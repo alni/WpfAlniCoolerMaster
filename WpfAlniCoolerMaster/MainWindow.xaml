@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAlniCoolerMaster"
         mc:Ignorable="d"
-        Title="MainWindow" Height="587" Width="587" MinWidth="587" MinHeight="587" SizeToContent="WidthAndHeight" Margin="0" Padding="0">
+        Title="MainWindow" Height="587" Width="587" MinWidth="587" MinHeight="587" SizeToContent="WidthAndHeight" Margin="0" Padding="0" Closing="Window_Closing">
     <Grid Margin="0,0,10,0">
         <Grid Height="110" Margin="10,120,0,0" VerticalAlignment="Top" Width="559">
             <Label Content="Select Device:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
@@ -108,7 +108,7 @@
                     <ListBoxItem Content="22"/>
                     <ListBoxItem Content="23"/>
                 </ComboBox>
-                <Label Content="R:" HorizontalAlignment="Left" Margin="24,45,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.733,5.289" Width="24" Grid.ColumnSpan="2" Height="26"/>
+                <Label x:Name="lblLedRed" Content="R:" HorizontalAlignment="Left" Margin="0,45,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.733,5.289" Width="48" Grid.ColumnSpan="2" Height="26" HorizontalContentAlignment="Right" />
                 <TextBox x:Name="tbLEDRed" HorizontalAlignment="Left" Height="23" Margin="19,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" Grid.Column="1" TextChanged="TextBoxLED_TextChanged"/>
                 <Label Content="G:" HorizontalAlignment="Left" Margin="121,45,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.733,5.289" Grid.Column="1" Height="26" Width="21"/>
                 <TextBox x:Name="tbLEDGreen" HorizontalAlignment="Left" Height="23" Margin="147,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" Grid.Column="1" TextChanged="TextBoxLED_TextChanged"/>
@@ -124,7 +124,7 @@
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="44*"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="R:" HorizontalAlignment="Left" Margin="22,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.733,5.289" Width="24" Grid.ColumnSpan="2"/>
+                <Label x:Name="lblLedRed_All" Content="R:" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.733,5.289" Width="46" Grid.ColumnSpan="2"  HorizontalContentAlignment="Right"/>
                 <TextBox x:Name="tbLEDRed_All" HorizontalAlignment="Left" Height="23" Margin="17,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" Grid.Column="1" TextChanged="TextBoxLED_TextChanged_All" RenderTransformOrigin="1.228,0.696"/>
                 <Label Content="G:" HorizontalAlignment="Left" Margin="116,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.733,5.289" Grid.Column="1"/>
                 <TextBox x:Name="tbLEDGreen_All" HorizontalAlignment="Left" Height="23" Margin="142,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" Grid.Column="1" TextChanged="TextBoxLED_TextChanged_All"/>

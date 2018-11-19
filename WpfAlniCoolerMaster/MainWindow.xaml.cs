@@ -115,6 +115,21 @@ namespace WpfAlniCoolerMaster
             {
                 Sharp_SDK.SDK.RefreshLed(true);
             }
+            bool isSingleColor = isSingleColorLed(selectedDevice);
+            tbLEDGreen.IsEnabled = !isSingleColor;
+            tbLEDBlue.IsEnabled = !isSingleColor;
+            tbLEDGreen_All.IsEnabled = !isSingleColor;
+            tbLEDBlue_All.IsEnabled = !isSingleColor;
+            if (isSingleColor)
+            {
+                lblLedRed.Content = "BRT:"; // Brightness
+                lblLedRed_All.Content = "BRT:"; // Brightness
+            }
+            else
+            {
+                lblLedRed.Content = "R:";
+                lblLedRed_All.Content = "R:";
+            }
         }
 
         // TODO: Rename function to "ButtonDeviceLayout_Click"
@@ -260,21 +275,35 @@ namespace WpfAlniCoolerMaster
             keyColor.b = blueColor;
             keyColor = normalizeColors(keyColor);
 
+            tbLEDRed.Text = keyColor.r.ToString();
+            tbLEDGreen.Text = keyColor.g.ToString();
+            tbLEDBlue.Text = keyColor.b.ToString();
+
             colorMatrix.KeyColor[row][column] = keyColor;
+        }
+
+        private bool isSingleColorLed(Sharp_SDK.DEVICE_INDEX device)
+        {
+            bool isSingleColorLed = false; // Default to RGB
+            switch (device)
+            {
+                case Sharp_SDK.DEVICE_INDEX.DEV_MKeys_L_White:
+                case Sharp_SDK.DEVICE_INDEX.DEV_MKeys_M_White:
+                case Sharp_SDK.DEVICE_INDEX.DEV_MKeys_S_White:
+                    isSingleColorLed = true;
+                    break;
+            }
+            return isSingleColorLed;
         }
 
         private Sharp_SDK.KEY_COLOR normalizeColors(Sharp_SDK.KEY_COLOR keyColor)
         {
             int selectedIndex = cbDeviceSelect.SelectedIndex;
             Sharp_SDK.DEVICE_INDEX selectedDevice = (Sharp_SDK.DEVICE_INDEX)selectedIndex;
-            switch (selectedDevice)
+            if (isSingleColorLed(selectedDevice))
             {
-                case Sharp_SDK.DEVICE_INDEX.DEV_MKeys_L_White:
-                case Sharp_SDK.DEVICE_INDEX.DEV_MKeys_M_White:
-                case Sharp_SDK.DEVICE_INDEX.DEV_MKeys_S_White:
-                    keyColor.g = keyColor.r;
-                    keyColor.b = keyColor.r;
-                    break;
+                keyColor.g = keyColor.r;
+                keyColor.b = keyColor.r;
             }
             return keyColor;
         }
@@ -282,21 +311,35 @@ namespace WpfAlniCoolerMaster
         private byte GetColorValue(string strColor)
         {
             byte color;
-            Byte.TryParse(strColor, out color);
-            if (color > MAX_COLOR_VALUE)
+            int iColor;
+            int.TryParse(strColor, out iColor);
+            if (iColor > MAX_COLOR_VALUE)
             {
-                color = MAX_COLOR_VALUE;
+                iColor = MAX_COLOR_VALUE;
             }
-            else if (color < 0)
+            else if (iColor < 0)
             {
-                color = 0;
+                iColor = 0;
             }
-            return color;
+            return (byte)iColor;
         }
 
         private void TextBoxLED_TextChanged_All(object sender, TextChangedEventArgs e)
         {
+            Sharp_SDK.KEY_COLOR keyColor = new Sharp_SDK.KEY_COLOR();
 
+            byte redColor = GetColorValue(tbLEDRed_All.Text);
+            byte greenColor = GetColorValue(tbLEDGreen_All.Text);
+            byte blueColor = GetColorValue(tbLEDBlue_All.Text);
+
+            keyColor.r = redColor;
+            keyColor.g = greenColor;
+            keyColor.b = blueColor;
+            keyColor = normalizeColors(keyColor);
+
+            tbLEDRed_All.Text = keyColor.r.ToString();
+            tbLEDGreen_All.Text = keyColor.g.ToString();
+            tbLEDBlue_All.Text = keyColor.b.ToString();
         }
 
         private void ComboBoxLED_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -317,6 +360,11 @@ namespace WpfAlniCoolerMaster
                 tbLEDGreen.Text = keyColor.g.ToString("F0");
                 tbLEDBlue.Text = keyColor.b.ToString("F0");
             }
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Sharp_SDK.SDK.EnableLedControl(false);
         }
     }
 }
