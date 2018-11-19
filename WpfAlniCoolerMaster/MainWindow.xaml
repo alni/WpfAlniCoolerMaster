@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAlniCoolerMaster"
         mc:Ignorable="d"
-        Title="MainWindow" Height="587" Width="587" MinWidth="587" MinHeight="587" SizeToContent="WidthAndHeight" Margin="0" Padding="0" Closing="Window_Closing">
-    <Grid Margin="0,0,10,0">
+        Title="MainWindow" Height="615" Width="587" MinWidth="587" MinHeight="587" SizeToContent="WidthAndHeight" Margin="0" Padding="0" Closing="Window_Closing">
+    <Grid Margin="0,0,10,10">
         <Grid Height="110" Margin="10,120,0,0" VerticalAlignment="Top" Width="559">
             <Label Content="Select Device:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
             <ComboBox x:Name="cbDeviceSelect" HorizontalAlignment="Left" Margin="97,14,0,0" VerticalAlignment="Top" Width="190" SelectedIndex="0">
@@ -148,6 +148,8 @@
                 <TextBox x:Name="tbVolumePeek" HorizontalAlignment="Left" Height="23" Margin="469,41,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="42" IsEnabled="False"/>
             </Grid>
         </GroupBox>
+        <Button Content="Save" HorizontalAlignment="Left" Margin="10,555,0,0" VerticalAlignment="Top" Width="75" Click="ButtonSave_Click"/>
+        <Button Content="Load" HorizontalAlignment="Left" Margin="90,555,0,0" VerticalAlignment="Top" Width="75" Click="ButtonLoad_Click"/>
 
     </Grid>
 </Window>

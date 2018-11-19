@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ExceptionServices;
@@ -28,6 +29,7 @@ namespace WpfAlniCoolerMaster
 
         private bool ledControlEnabled = true;
         private Sharp_SDK.COLOR_MATRIX colorMatrix;
+        private Sharp_SDK.KEY_COLOR keyColorAll;
 
         private bool initialized = false;
 
@@ -326,12 +328,24 @@ namespace WpfAlniCoolerMaster
 
         private void TextBoxLED_TextChanged_All(object sender, TextChangedEventArgs e)
         {
-            Sharp_SDK.KEY_COLOR keyColor = new Sharp_SDK.KEY_COLOR();
-
             byte redColor = GetColorValue(tbLEDRed_All.Text);
             byte greenColor = GetColorValue(tbLEDGreen_All.Text);
             byte blueColor = GetColorValue(tbLEDBlue_All.Text);
+            UdpateAllLEDColor(redColor, greenColor, blueColor);
+        }
 
+        private void UdpateAllLEDColor()
+        {
+            UdpateAllLEDColor(keyColorAll, keyColorAll.r, keyColorAll.g, keyColorAll.b);
+        }
+
+        private void UdpateAllLEDColor(byte redColor, byte greenColor, byte blueColor)
+        {
+            UdpateAllLEDColor(keyColorAll, redColor, greenColor, blueColor);
+        }
+        
+        private void UdpateAllLEDColor(Sharp_SDK.KEY_COLOR keyColor, byte redColor, byte greenColor, byte blueColor)
+        {
             keyColor.r = redColor;
             keyColor.g = greenColor;
             keyColor.b = blueColor;
@@ -340,9 +354,16 @@ namespace WpfAlniCoolerMaster
             tbLEDRed_All.Text = keyColor.r.ToString();
             tbLEDGreen_All.Text = keyColor.g.ToString();
             tbLEDBlue_All.Text = keyColor.b.ToString();
+
+            keyColorAll = keyColor;
         }
 
         private void ComboBoxLED_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UpdateSelectedLEDColor();
+        }
+
+        private void UpdateSelectedLEDColor()
         {
             int row = 0;
             int column = 0;
@@ -365,6 +386,28 @@ namespace WpfAlniCoolerMaster
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             Sharp_SDK.SDK.EnableLedControl(false);
+        }
+
+        private void ButtonSave_Click(object sender, RoutedEventArgs e)
+        {
+            DeviceSettings deviceSettings = new DeviceSettings();
+            deviceSettings.ColorMatrix = colorMatrix;
+            deviceSettings.KeyColorAll = keyColorAll;
+
+            string output = JsonConvert.SerializeObject(deviceSettings);
+            Properties.Settings.Default.DefaultDeviceSettingsJson = output + "";
+            Properties.Settings.Default.Save();
+        }
+
+        private void ButtonLoad_Click(object sender, RoutedEventArgs e)
+        {
+            string output = Properties.Settings.Default.DefaultDeviceSettingsJson + "";
+            DeviceSettings deviceSettings = JsonConvert.DeserializeObject<DeviceSettings>(output);
+            colorMatrix = deviceSettings.ColorMatrix;
+            keyColorAll = deviceSettings.KeyColorAll;
+
+            UpdateSelectedLEDColor();
+            UdpateAllLEDColor();
         }
     }
 }
