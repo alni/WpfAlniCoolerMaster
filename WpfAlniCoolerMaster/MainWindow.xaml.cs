@@ -105,30 +105,38 @@ namespace WpfAlniCoolerMaster
             MessageBox.Show(isPluggedIn ? "Connected!" : "Removed!");
         }
 
-        // TODO: Rename function to "ButtonSetDevice_Click"
+        // Setting the Current Device
         private void ButtonSetDevice_Click(object sender, RoutedEventArgs e)
         {
-            int selectedIndex = cbDeviceSelect.SelectedIndex;
+            int selectedIndex = cbDeviceSelect.SelectedIndex; // Selected Device Index
 
-            Sharp_SDK.DEVICE_INDEX selectedDevice = (Sharp_SDK.DEVICE_INDEX)selectedIndex;
-            Sharp_SDK.SDK.SetControlDevice(selectedDevice);
-            Sharp_SDK.SDK.EnableLedControl(ledControlEnabled);
+            // Try to convert the index to a device enum and set it as the currently controlled
+            Sharp_SDK.DEVICE_INDEX selectedDevice = (Sharp_SDK.DEVICE_INDEX)selectedIndex; // convert to enum
+            Sharp_SDK.SDK.SetControlDevice(selectedDevice); // Try to set it as controlled
+            Sharp_SDK.SDK.EnableLedControl(ledControlEnabled); // Enable/Disable LED Control
             if (ledControlEnabled)
             {
+                // Refresh the LEDs if LED Control is enabled
                 Sharp_SDK.SDK.RefreshLed(true);
             }
+
+            // Change the color setting states based on if it is a RGB Device or not (single color LEDs)
             bool isSingleColor = isSingleColorLed(selectedDevice);
+
+            // Only enable Green and Blue color textboxes if RGB LEDs
             tbLEDGreen.IsEnabled = !isSingleColor;
             tbLEDBlue.IsEnabled = !isSingleColor;
             tbLEDGreen_All.IsEnabled = !isSingleColor;
             tbLEDBlue_All.IsEnabled = !isSingleColor;
             if (isSingleColor)
             {
+                // Change the Red color labels to Brightness content with single color LEDs
                 lblLedRed.Content = "BRT:"; // Brightness
                 lblLedRed_All.Content = "BRT:"; // Brightness
             }
             else
             {
+                // Revert toe Red color lables to Red content with RGB LEDs
                 lblLedRed.Content = "R:";
                 lblLedRed_All.Content = "R:";
             }
@@ -137,6 +145,7 @@ namespace WpfAlniCoolerMaster
         // TODO: Rename function to "ButtonDeviceLayout_Click"
         private void ButtonDeviceLayout_Click(object sender, RoutedEventArgs e)
         {
+            // Get the current keyboard layout of the device
             Sharp_SDK.LAYOUT_KEYOBARD kbdLayout = Sharp_SDK.SDK.GetDeviceLayout();
             string strKbdLayout = kbdLayout.ToString();
             tbLayout.Text = strKbdLayout;
@@ -146,12 +155,14 @@ namespace WpfAlniCoolerMaster
         [HandleProcessCorruptedStateExceptions]
         private void ButtonLEDControlToggle_Click(object sender, RoutedEventArgs e)
         {
+            // Toggle LED Control
             ledControlEnabled = !ledControlEnabled;
             try
             {
                 Sharp_SDK.SDK.EnableLedControl(ledControlEnabled);
                 if (ledControlEnabled)
                 {
+                    // Refresh the LEDs if LED Control is enabled
                     Sharp_SDK.SDK.RefreshLed(true);
                 }
             }
@@ -159,17 +170,21 @@ namespace WpfAlniCoolerMaster
             {
                 //MessageBox.Show(ex.Message);
             }
-            
 
+
+            // Update the LED Contol button content based on if LED Control is currently enabled or disabled
             if (ledControlEnabled == true)
             {
+                // LED Control is currently enabled
                 btnLedControl.Content = "Disable";
             }
             else
             {
+                // LED Control is currently disabled
                 btnLedControl.Content = "Enable";
             }
-            
+
+            // Update the state of other controls based on if LED Control is currently enabled or disabled
             btnLedEffect.IsEnabled = !ledControlEnabled;
 
             btnLEDSingleKey.IsEnabled = ledControlEnabled;
@@ -180,6 +195,7 @@ namespace WpfAlniCoolerMaster
         // TODO: Rename function to "ButtonLedEffect_Click"
         private void ButtonLedEffect_Click(object sender, RoutedEventArgs e)
         {
+            // Setting the current LED Effect (only available when LED Control is disabled)
             Sharp_SDK.EFF_INDEX effIndex = (Sharp_SDK.EFF_INDEX)cbLEDEffectChoose.SelectedIndex;
             bool success = Sharp_SDK.SDK.SwitchLedEffect(effIndex);
             if (success == false)
@@ -189,6 +205,7 @@ namespace WpfAlniCoolerMaster
         }
 
         /// <summary>
+        /// Only allow numbers in TextBox
         /// https://stackoverflow.com/a/12721673
         /// </summary>
         /// <param name="sender"></param>
@@ -202,6 +219,7 @@ namespace WpfAlniCoolerMaster
         // TODO: Rename function to "ButtonSetSingleKeyColor_Click"
         private void ButtonSetSingleKeyColor_Click(object sender, RoutedEventArgs e)
         {
+            // Setting the current color for a single key (only available when LED Control is enabled)
             int keyRowIndex = cbLEDRow.SelectedIndex;
             int keyColumnIndex = cbLEDColumn.SelectedIndex;
 
@@ -214,6 +232,7 @@ namespace WpfAlniCoolerMaster
         // TODO: Rename function to "ButtonSetKeyColorMatrix_Click"
         private void ButtonSetKeyColorMatrix_Click(object sender, RoutedEventArgs e)
         {
+            // Setting the current colors set for each keys (only available when LED Control is enabled)
             //Sharp_SDK.SDK.SetAllLedColor(colorMatrix);
             Sharp_SDK.KEY_COLOR[][] keyColors = colorMatrix.KeyColor;
             for (int i = 0; i < keyColors.Length; i++)
@@ -231,6 +250,7 @@ namespace WpfAlniCoolerMaster
         // TODO: Rename function to "ButtonSetFullKeyColor_Click"
         private void ButtonSetFullKeyColor_Click(object sender, RoutedEventArgs e)
         {
+            // Setting the the same color for all the each keys (only available when LED Control is enabled)
             byte redColor = GetColorValue(tbLEDRed_All.Text);
             byte greenColor = GetColorValue(tbLEDGreen_All.Text);
             byte blueColor = GetColorValue(tbLEDBlue_All.Text);
@@ -261,29 +281,42 @@ namespace WpfAlniCoolerMaster
 
         }
 
+        // Text Changes to the LED color textboxes
         private void TextBoxLED_TextChanged(object sender, TextChangedEventArgs e)
         {
+            // Get the currently selected key row and column
             int row = cbLEDRow.SelectedIndex;
             int column = cbLEDColumn.SelectedIndex;
 
+            // Get the current Key color of the selected key
             Sharp_SDK.KEY_COLOR keyColor = colorMatrix.KeyColor[row][column];
 
-            byte redColor = GetColorValue(tbLEDRed.Text);
-            byte greenColor = GetColorValue(tbLEDGreen.Text);
-            byte blueColor = GetColorValue(tbLEDBlue.Text);
+            // Convert the text of the LED color textboxes to a valid color value
+            byte redColor = GetColorValue(tbLEDRed.Text); // Convert the Red Color
+            byte greenColor = GetColorValue(tbLEDGreen.Text); // Convert the Green Color
+            byte blueColor = GetColorValue(tbLEDBlue.Text); // Convert the Blue Color
 
-            keyColor.r = redColor;
-            keyColor.g = greenColor;
-            keyColor.b = blueColor;
+            // Update the Key Color with the new values
+            keyColor.r = redColor; // Update the red channel
+            keyColor.g = greenColor; // Update the green channel
+            keyColor.b = blueColor; // Update the blue channel
+            // Normailize the colors incase of a non-RGB LED device
             keyColor = normalizeColors(keyColor);
 
+            // Update the LED Color textboxes with the udpated color values
             tbLEDRed.Text = keyColor.r.ToString();
             tbLEDGreen.Text = keyColor.g.ToString();
             tbLEDBlue.Text = keyColor.b.ToString();
 
+            // Set the Color of the key with the new Key Color
             colorMatrix.KeyColor[row][column] = keyColor;
         }
 
+        /// <summary>
+        /// Check if the device only supports a Single LED Colors or RGB Colors
+        /// </summary>
+        /// <param name="device"></param>
+        /// <returns>True when Single Color LED. False if supports RGB Colors</returns>
         private bool isSingleColorLed(Sharp_SDK.DEVICE_INDEX device)
         {
             bool isSingleColorLed = false; // Default to RGB
@@ -298,18 +331,33 @@ namespace WpfAlniCoolerMaster
             return isSingleColorLed;
         }
 
+        /// <summary>
+        /// Normalize the Key Color channels
+        /// 
+        /// For Single Color LEDs, sets the Green and Blue channels to the same as the Red channel.
+        /// 
+        /// Otherwise, for RGB LEDs, just returns the supplied Key Color
+        /// </summary>
+        /// <param name="keyColor">The Key Color to normalize</param>
+        /// <returns>Normalized Key Color</returns>
         private Sharp_SDK.KEY_COLOR normalizeColors(Sharp_SDK.KEY_COLOR keyColor)
         {
             int selectedIndex = cbDeviceSelect.SelectedIndex;
             Sharp_SDK.DEVICE_INDEX selectedDevice = (Sharp_SDK.DEVICE_INDEX)selectedIndex;
             if (isSingleColorLed(selectedDevice))
             {
-                keyColor.g = keyColor.r;
-                keyColor.b = keyColor.r;
+                // Set the other channels to the same as the Red channel
+                keyColor.g = keyColor.r; // Green channel
+                keyColor.b = keyColor.r; // Blue channel
             }
             return keyColor;
         }
 
+        /// <summary>
+        /// Tries to get and clamp the string color value within correct values
+        /// </summary>
+        /// <param name="strColor">The string color value</param>
+        /// <returns>A correct color value</returns>
         private byte GetColorValue(string strColor)
         {
             byte color;
@@ -317,97 +365,144 @@ namespace WpfAlniCoolerMaster
             int.TryParse(strColor, out iColor);
             if (iColor > MAX_COLOR_VALUE)
             {
-                iColor = MAX_COLOR_VALUE;
+                // Clamp color if greater than MAX_COLOR_VALUE
+                iColor = MAX_COLOR_VALUE; // Set to MAX_COLOR_VALUE
             }
             else if (iColor < 0)
             {
-                iColor = 0;
+                // Set the color to 0 if less than that
+                iColor = 0; // Set to 0
             }
-            return (byte)iColor;
+            return (byte)iColor; // Return as byte
         }
 
         private void TextBoxLED_TextChanged_All(object sender, TextChangedEventArgs e)
         {
+            // Convert the text of the LED color textboxes to a valid color value
             byte redColor = GetColorValue(tbLEDRed_All.Text);
             byte greenColor = GetColorValue(tbLEDGreen_All.Text);
             byte blueColor = GetColorValue(tbLEDBlue_All.Text);
-            UdpateAllLEDColor(redColor, greenColor, blueColor);
+
+            // Update the Key Color for all keys with the new values
+            UpdateAllLEDColor(redColor, greenColor, blueColor);
         }
 
-        private void UdpateAllLEDColor()
+        /// <summary>
+        /// Update the Key Color for all keys with the value a new value
+        /// </summary>
+        private void UpdateAllLEDColor()
         {
-            UdpateAllLEDColor(keyColorAll, keyColorAll.r, keyColorAll.g, keyColorAll.b);
+            UpdateAllLEDColor(keyColorAll, keyColorAll.r, keyColorAll.g, keyColorAll.b);
         }
 
-        private void UdpateAllLEDColor(byte redColor, byte greenColor, byte blueColor)
+        /// <summary>
+        /// Update the Key Color for all keys with the value a new value
+        /// </summary>
+        /// <param name="redColor">Color value for Red channel</param>
+        /// <param name="greenColor">Color value for Green channel</param>
+        /// <param name="blueColor">Color value for Blue channel</param>
+        private void UpdateAllLEDColor(byte redColor, byte greenColor, byte blueColor)
         {
-            UdpateAllLEDColor(keyColorAll, redColor, greenColor, blueColor);
+            UpdateAllLEDColor(keyColorAll, redColor, greenColor, blueColor);
         }
-        
-        private void UdpateAllLEDColor(Sharp_SDK.KEY_COLOR keyColor, byte redColor, byte greenColor, byte blueColor)
+
+        /// <summary>
+        /// Update the Key Color for all keys with the value a new value
+        /// </summary>
+        /// <param name="keyColor">The Key Color to update the values frem</param>
+        /// <param name="redColor">Color value for Red channel</param>
+        /// <param name="greenColor">Color value for Green channel</param>
+        /// <param name="blueColor">Color value for Blue channel</param>
+        private void UpdateAllLEDColor(Sharp_SDK.KEY_COLOR keyColor, byte redColor, byte greenColor, byte blueColor)
         {
-            keyColor.r = redColor;
-            keyColor.g = greenColor;
-            keyColor.b = blueColor;
+            // Update the Key Color with the new values
+            keyColor.r = redColor; // Update the red channel
+            keyColor.g = greenColor; // Update the green channel
+            keyColor.b = blueColor; // Update the red channel
+            // Normailize the colors incase of a non-RGB LED device
             keyColor = normalizeColors(keyColor);
 
+            // Update the LED Color textboxes with the udpated color values
             tbLEDRed_All.Text = keyColor.r.ToString();
             tbLEDGreen_All.Text = keyColor.g.ToString();
             tbLEDBlue_All.Text = keyColor.b.ToString();
 
+            // Set the Key Color for all keys with the new Key Color
             keyColorAll = keyColor;
         }
 
+        // Changes to the selected index of either LED Row or LED Column
         private void ComboBoxLED_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            // Update the Key Color textboxes with the new values
             UpdateSelectedLEDColor();
         }
 
+        /// <summary>
+        /// // Update the Key Color textboxes with the new values based on the selected Key Row and Column
+        /// </summary>
         private void UpdateSelectedLEDColor()
         {
-            int row = 0;
-            int column = 0;
+            int row = 0; // Default to 0
+            int column = 0; // Default to 0
             if (initialized == true)
             {
+                // Only update the Key Color textboxes if the window has actually been initalized and loaded
                 if (cbLEDRow != null && cbLEDColumn != null)
                 {
+                    // Only update the LED row & column index when both the LED Row & Column Combob boxes has been loaded
                     row = cbLEDRow.SelectedIndex;
                     column = cbLEDColumn.SelectedIndex;
                 }
+                // Get the current Key Color from the currently selected Key row and column
                 Sharp_SDK.KEY_COLOR keyColor = colorMatrix.KeyColor[row][column];
+                // Normalize the color incase of Single Color LED device
                 keyColor = normalizeColors(keyColor);
 
-                tbLEDRed.Text = keyColor.r.ToString("F0");
-                tbLEDGreen.Text = keyColor.g.ToString("F0");
-                tbLEDBlue.Text = keyColor.b.ToString("F0");
+                // Update the Key LED Color textboxes with the new values
+                tbLEDRed.Text = keyColor.r.ToString("F0"); // Update the Red channel
+                tbLEDGreen.Text = keyColor.g.ToString("F0"); // Update the Green channel
+                tbLEDBlue.Text = keyColor.b.ToString("F0"); // Update the Blue channel
             }
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            // Disable the LED Control when closing the window (revert changes to the LED colors)
             Sharp_SDK.SDK.EnableLedControl(false);
         }
 
+        // Save the Default Settings
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
+            // Create new Device Settings object
             DeviceSettings deviceSettings = new DeviceSettings();
-            deviceSettings.ColorMatrix = colorMatrix;
-            deviceSettings.KeyColorAll = keyColorAll;
+            deviceSettings.ColorMatrix = colorMatrix; // Store the current Colors set for each key
+            deviceSettings.KeyColorAll = keyColorAll; // Store the current Key Color for All keys
 
+            // Convert the Device Settings to a JSON object string
             string output = JsonConvert.SerializeObject(deviceSettings);
+            // Store the JSON string in User (Default) Settings, as the Default Device Settings
             Properties.Settings.Default.DefaultDeviceSettingsJson = output + "";
-            Properties.Settings.Default.Save();
+            Properties.Settings.Default.Save(); // Save the User (Default) Settings
         }
 
+        // Load the Default Settings
         private void ButtonLoad_Click(object sender, RoutedEventArgs e)
         {
+            // Get the Default Device Settings JSON object string
             string output = Properties.Settings.Default.DefaultDeviceSettingsJson + "";
+            // Convert the JSON boject string to a Device Settings object
             DeviceSettings deviceSettings = JsonConvert.DeserializeObject<DeviceSettings>(output);
-            colorMatrix = deviceSettings.ColorMatrix;
-            keyColorAll = deviceSettings.KeyColorAll;
+            colorMatrix = deviceSettings.ColorMatrix; // Load the current Colors set for each key
+            keyColorAll = deviceSettings.KeyColorAll; // Load the current Keu Color for All keys
 
+            // Update the value for the currently selected key
+            // Not needed to update each key at this time(the others will be uopdated the the LED Row or Column selection changes)
             UpdateSelectedLEDColor();
-            UdpateAllLEDColor();
+
+            // Update the current value for the All Keys
+            UpdateAllLEDColor();
         }
     }
 }
