@@ -494,8 +494,55 @@ namespace WpfAlniCoolerMaster
             string output = Properties.Settings.Default.DefaultDeviceSettingsJson + "";
             // Convert the JSON boject string to a Device Settings object
             DeviceSettings deviceSettings = JsonConvert.DeserializeObject<DeviceSettings>(output);
-            colorMatrix = deviceSettings.ColorMatrix; // Load the current Colors set for each key
-            keyColorAll = deviceSettings.KeyColorAll; // Load the current Keu Color for All keys
+            if (deviceSettings != null)
+            {
+                if (deviceSettings.ColorMatrix.KeyColor != null)
+                {
+                    colorMatrix = deviceSettings.ColorMatrix; // Load the current Colors set for each key
+                }
+                keyColorAll = deviceSettings.KeyColorAll; // Load the current Keu Color for All keys
+            }
+
+            // Update the value for the currently selected key
+            // Not needed to update each key at this time(the others will be uopdated the the LED Row or Column selection changes)
+            UpdateSelectedLEDColor();
+
+            // Update the current value for the All Keys
+            UpdateAllLEDColor();
+        }
+
+        private void ButtonProfileSave_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedProfile = cbProfile.SelectedIndex;
+
+            // Create new Device Settings object
+            DeviceSettings deviceSettings = new DeviceSettings();
+            deviceSettings.ColorMatrix = colorMatrix; // Store the current Colors set for each key
+            deviceSettings.KeyColorAll = keyColorAll; // Store the current Key Color for All keys
+
+            // Convert the Device Settings to a JSON object string
+            string output = JsonConvert.SerializeObject(deviceSettings);
+            // Store the JSON string in User (Default) Settings, as the Default Device Settings
+            Properties.Settings.Default.ProfilesDeviceSettingsJson[selectedProfile] = output + "";
+            Properties.Settings.Default.Save(); // Save the User (Default) Settings
+        }
+
+        private void ButtonProfileLoad_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedProfile = cbProfile.SelectedIndex;
+
+            // Get the Default Device Settings JSON object string
+            string output = Properties.Settings.Default.ProfilesDeviceSettingsJson[selectedProfile] + "";
+            // Convert the JSON boject string to a Device Settings object
+            DeviceSettings deviceSettings = JsonConvert.DeserializeObject<DeviceSettings>(output);
+            if (deviceSettings != null)
+            {
+                if (deviceSettings.ColorMatrix.KeyColor != null)
+                {
+                    colorMatrix = deviceSettings.ColorMatrix; // Load the current Colors set for each key
+                }
+                keyColorAll = deviceSettings.KeyColorAll; // Load the current Keu Color for All keys
+            }
 
             // Update the value for the currently selected key
             // Not needed to update each key at this time(the others will be uopdated the the LED Row or Column selection changes)

@@ -5,28 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAlniCoolerMaster"
         mc:Ignorable="d"
-        Title="MainWindow" Height="615" Width="587" MinWidth="587" MinHeight="587" SizeToContent="WidthAndHeight" Margin="0" Padding="0" Closing="Window_Closing">
+        Title="MainWindow" Height="615" Width="587" MinWidth="597" MinHeight="625" SizeToContent="WidthAndHeight" Margin="0" Padding="0" Closing="Window_Closing">
     <Grid Margin="0,0,10,10">
         <Grid Height="110" Margin="10,120,0,0" VerticalAlignment="Top" Width="559">
             <Label Content="Select Device:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
             <ComboBox x:Name="cbDeviceSelect" HorizontalAlignment="Left" Margin="97,14,0,0" VerticalAlignment="Top" Width="190" SelectedIndex="0">
-                <ListBoxItem Content="MasterKeys Pro L"/>
-                <ListBoxItem Content="MasterKeys Pro S"/>
-                <ListBoxItem Content="MasterKeys Pro L White"/>
-                <ListBoxItem Content="MasterKeys Pro M White"/>
+                <ComboBoxItem Content="MasterKeys Pro L"/>
+                <ComboBoxItem Content="MasterKeys Pro S"/>
+                <ComboBoxItem Content="MasterKeys Pro L White"/>
+                <ComboBoxItem Content="MasterKeys Pro M White"/>
 
-                <ListBoxItem Content="MasterMouse Pro L"/>
-                <ListBoxItem Content="MasterMouse Pro S"/>
+                <ComboBoxItem Content="MasterMouse Pro L"/>
+                <ComboBoxItem Content="MasterMouse Pro S"/>
 
-                <ListBoxItem Content="MasterKeys Pro M"/>
-                <ListBoxItem Content="MasterKeys Pro S White"/>
+                <ComboBoxItem Content="MasterKeys Pro M"/>
+                <ComboBoxItem Content="MasterKeys Pro S White"/>
 
-                <ListBoxItem Content="MM520"/>
-                <ListBoxItem Content="MM530"/>
-                <ListBoxItem Content="MK750"/>
-                <ListBoxItem Content="CK372"/>
-                <ListBoxItem Content="CK550/552"/>
-                <ListBoxItem Content="CK551"/>
+                <ComboBoxItem Content="MM520"/>
+                <ComboBoxItem Content="MM530"/>
+                <ComboBoxItem Content="MK750"/>
+                <ComboBoxItem Content="CK372"/>
+                <ComboBoxItem Content="CK550/552"/>
+                <ComboBoxItem Content="CK551"/>
             </ComboBox>
             <Label Content="IsDevicePlug" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top"/>
             <Button Content="Check" HorizontalAlignment="Left" Margin="97,44,0,0" VerticalAlignment="Top" Width="75" Click="ButtonDevicePlug_Click"/>
@@ -38,29 +38,29 @@
             <Button x:Name="btnLedControl" Content="Disable" HorizontalAlignment="Left" Margin="97,75,0,0" VerticalAlignment="Top" Width="75" Click="ButtonLEDControlToggle_Click"/>
             <Label Content="LED Effect Choose:" HorizontalAlignment="Left" Margin="214,72,0,0" VerticalAlignment="Top"/>
             <ComboBox x:Name="cbLEDEffectChoose" HorizontalAlignment="Left" Margin="327,76,0,0" VerticalAlignment="Top" Width="112" SelectedIndex="0">
-                <ListBoxItem Content="Full ON"/>
-                <ListBoxItem Content="Breathing"/>
-                <ListBoxItem Content="Color Cycle"/>
-                <ListBoxItem Content="Single Key"/>
+                <ComboBoxItem Content="Full ON"/>
+                <ComboBoxItem Content="Breathing"/>
+                <ComboBoxItem Content="Color Cycle"/>
+                <ComboBoxItem Content="Single Key"/>
 
-                <ListBoxItem Content="Wave Color"/>
-                <ListBoxItem Content="Ripple"/>
+                <ComboBoxItem Content="Wave Color"/>
+                <ComboBoxItem Content="Ripple"/>
 
-                <ListBoxItem Content="Cross Mode"/>
-                <ListBoxItem Content="Rain Drop"/>
+                <ComboBoxItem Content="Cross Mode"/>
+                <ComboBoxItem Content="Rain Drop"/>
 
-                <ListBoxItem Content="Star Effect"/>
-                <ListBoxItem Content="Gane Snake"/>
-                <ListBoxItem Content="Customization"/>
-                <ListBoxItem Content="Indicator"/>
-                <ListBoxItem Content="Fireball"/>
-                <ListBoxItem Content="Water Ripple"/>
-                <ListBoxItem Content="Reactive Punch"/>
-                <ListBoxItem Content="Snowing"/>
-                <ListBoxItem Content="Heartbeat"/>
-                <ListBoxItem Content="Circle Spectrum"/>
-                <ListBoxItem Content="Reactive Tornado"/>
-                <ListBoxItem Content="MultiLayer"/>
+                <ComboBoxItem Content="Star Effect"/>
+                <ComboBoxItem Content="Gane Snake"/>
+                <ComboBoxItem Content="Customization"/>
+                <ComboBoxItem Content="Indicator"/>
+                <ComboBoxItem Content="Fireball"/>
+                <ComboBoxItem Content="Water Ripple"/>
+                <ComboBoxItem Content="Reactive Punch"/>
+                <ComboBoxItem Content="Snowing"/>
+                <ComboBoxItem Content="Heartbeat"/>
+                <ComboBoxItem Content="Circle Spectrum"/>
+                <ComboBoxItem Content="Reactive Tornado"/>
+                <ComboBoxItem Content="MultiLayer"/>
             </ComboBox>
             <Button x:Name="btnLedEffect" Content="Set" HorizontalAlignment="Left" Margin="444,75,0,0" VerticalAlignment="Top" Width="75" Click="ButtonLedEffect_Click" IsEnabled="False"/>
         </Grid>
@@ -73,40 +73,40 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="Row:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="38" Height="26"/>
                 <ComboBox x:Name="cbLEDRow" HorizontalAlignment="Left" Margin="19,14,0,0" VerticalAlignment="Top" Width="120" Grid.Column="1" Height="22" SelectedIndex="0" SelectionChanged="ComboBoxLED_SelectionChanged">
-                    <ListBoxItem Content="0"/>
-                    <ListBoxItem Content="1"/>
-                    <ListBoxItem Content="2"/>
-                    <ListBoxItem Content="3"/>
-                    <ListBoxItem Content="4"/>
-                    <ListBoxItem Content="5"/>
-                    <ListBoxItem Content="6"/>
+                    <ComboBoxItem Content="0"/>
+                    <ComboBoxItem Content="1"/>
+                    <ComboBoxItem Content="2"/>
+                    <ComboBoxItem Content="3"/>
+                    <ComboBoxItem Content="4"/>
+                    <ComboBoxItem Content="5"/>
+                    <ComboBoxItem Content="6"/>
                 </ComboBox>
                 <Label Content="Column:" HorizontalAlignment="Left" Margin="150,10,0,0" VerticalAlignment="Top" Grid.Column="1" Height="26" Width="54"/>
                 <ComboBox x:Name="cbLEDColumn" HorizontalAlignment="Left" Margin="209,14,0,0" VerticalAlignment="Top" Width="120" Grid.Column="1" Height="22" SelectedIndex="0"  SelectionChanged="ComboBoxLED_SelectionChanged">
-                    <ListBoxItem Content="0"/>
-                    <ListBoxItem Content="1"/>
-                    <ListBoxItem Content="2"/>
-                    <ListBoxItem Content="3"/>
-                    <ListBoxItem Content="4"/>
-                    <ListBoxItem Content="5"/>
-                    <ListBoxItem Content="6"/>
-                    <ListBoxItem Content="7"/>
-                    <ListBoxItem Content="8"/>
-                    <ListBoxItem Content="9"/>
-                    <ListBoxItem Content="10"/>
-                    <ListBoxItem Content="11"/>
-                    <ListBoxItem Content="12"/>
-                    <ListBoxItem Content="13"/>
-                    <ListBoxItem Content="14"/>
-                    <ListBoxItem Content="15"/>
-                    <ListBoxItem Content="16"/>
-                    <ListBoxItem Content="17"/>
-                    <ListBoxItem Content="18"/>
-                    <ListBoxItem Content="19"/>
-                    <ListBoxItem Content="20"/>
-                    <ListBoxItem Content="21"/>
-                    <ListBoxItem Content="22"/>
-                    <ListBoxItem Content="23"/>
+                    <ComboBoxItem Content="0"/>
+                    <ComboBoxItem Content="1"/>
+                    <ComboBoxItem Content="2"/>
+                    <ComboBoxItem Content="3"/>
+                    <ComboBoxItem Content="4"/>
+                    <ComboBoxItem Content="5"/>
+                    <ComboBoxItem Content="6"/>
+                    <ComboBoxItem Content="7"/>
+                    <ComboBoxItem Content="8"/>
+                    <ComboBoxItem Content="9"/>
+                    <ComboBoxItem Content="10"/>
+                    <ComboBoxItem Content="11"/>
+                    <ComboBoxItem Content="12"/>
+                    <ComboBoxItem Content="13"/>
+                    <ComboBoxItem Content="14"/>
+                    <ComboBoxItem Content="15"/>
+                    <ComboBoxItem Content="16"/>
+                    <ComboBoxItem Content="17"/>
+                    <ComboBoxItem Content="18"/>
+                    <ComboBoxItem Content="19"/>
+                    <ComboBoxItem Content="20"/>
+                    <ComboBoxItem Content="21"/>
+                    <ComboBoxItem Content="22"/>
+                    <ComboBoxItem Content="23"/>
                 </ComboBox>
                 <Label x:Name="lblLedRed" Content="R:" HorizontalAlignment="Left" Margin="0,45,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.733,5.289" Width="48" Grid.ColumnSpan="2" Height="26" HorizontalContentAlignment="Right" />
                 <TextBox x:Name="tbLEDRed" HorizontalAlignment="Left" Height="23" Margin="19,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" Grid.Column="1" TextChanged="TextBoxLED_TextChanged"/>
@@ -150,6 +150,16 @@
         </GroupBox>
         <Button Content="Save" HorizontalAlignment="Left" Margin="10,555,0,0" VerticalAlignment="Top" Width="75" Click="ButtonSave_Click"/>
         <Button Content="Load" HorizontalAlignment="Left" Margin="90,555,0,0" VerticalAlignment="Top" Width="75" Click="ButtonLoad_Click"/>
+        <ComboBox x:Name="cbProfile" HorizontalAlignment="Left" Margin="287,555,0,-1" VerticalAlignment="Top" Width="120" SelectedIndex="0">
+            <ComboBoxItem Content="Profile 1"/>
+            <ComboBoxItem Content="Profile 2"/>
+            <ComboBoxItem Content="Profile 3"/>
+            <ComboBoxItem Content="Profile 4"/>
+            <ComboBoxItem Content="Profile 5"/>
+        </ComboBox>
+        <Label Content="Select Profile:" HorizontalAlignment="Left" Margin="201,551,0,-1" VerticalAlignment="Top" Height="24"/>
+        <Button Content="Save Profile" HorizontalAlignment="Left" Margin="412,554,0,0" VerticalAlignment="Top" Width="75" Click="ButtonProfileSave_Click"/>
+        <Button Content="Load Profile" HorizontalAlignment="Left" Margin="492,554,0,0" VerticalAlignment="Top" Width="75" Click="ButtonProfileLoad_Click"/>
 
     </Grid>
 </Window>
