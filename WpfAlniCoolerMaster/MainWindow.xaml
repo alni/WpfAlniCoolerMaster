@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAlniCoolerMaster"
         mc:Ignorable="d"
-        Title="MainWindow" Height="615" Width="587" MinWidth="597" MinHeight="625" SizeToContent="WidthAndHeight" Margin="0" Padding="0" Closing="Window_Closing">
+        Title="MainWindow" Height="650" Width="587" MinWidth="597" MinHeight="660" SizeToContent="WidthAndHeight" Margin="0" Padding="0" Closing="Window_Closing">
     <Grid Margin="0,0,10,10">
         <Grid Height="110" Margin="10,120,0,0" VerticalAlignment="Top" Width="559">
             <Label Content="Select Device:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
@@ -160,6 +160,9 @@
         <Label Content="Select Profile:" HorizontalAlignment="Left" Margin="201,551,0,-1" VerticalAlignment="Top" Height="24"/>
         <Button Content="Save Profile" HorizontalAlignment="Left" Margin="412,554,0,0" VerticalAlignment="Top" Width="75" Click="ButtonProfileSave_Click"/>
         <Button Content="Load Profile" HorizontalAlignment="Left" Margin="492,554,0,0" VerticalAlignment="Top" Width="75" Click="ButtonProfileLoad_Click"/>
+        <Label Content="Bind Profile to EXE:" HorizontalAlignment="Left" Margin="250,583,0,0" VerticalAlignment="Top" Width="112"/>
+        <TextBox x:Name="tbProfileExe" HorizontalAlignment="Left" Height="23" Margin="367,586,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Bind Profile" HorizontalAlignment="Left" Margin="492,586,0,0" VerticalAlignment="Top" Width="75"/>
 
     </Grid>
 </Window>

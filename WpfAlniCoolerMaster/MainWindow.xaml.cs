@@ -30,8 +30,12 @@ namespace WpfAlniCoolerMaster
         private bool ledControlEnabled = true;
         private Sharp_SDK.COLOR_MATRIX colorMatrix;
         private Sharp_SDK.KEY_COLOR keyColorAll;
+        private string boundExe = null;
+        private string lastActiveProcess = null;
 
         private bool initialized = false;
+
+        private Sharp_SDK.DEVICE_INDEX currDevice;
 
         public MainWindow()
         {
@@ -56,6 +60,7 @@ namespace WpfAlniCoolerMaster
             colorMatrix = new Sharp_SDK.COLOR_MATRIX(keyColors);
             //Sharp_SDK.SDK.SetControlDevice(Sharp_SDK.DEVICE_INDEX.DEV_MKeys_M_White);
             initialized = true;
+            lastActiveProcess = (ActiveProcess.GetActiveProcessFileName() + ".exe").ToLower();
         }
 
         private void SetSysInfoTimer()
@@ -70,6 +75,25 @@ namespace WpfAlniCoolerMaster
         private void ASysInfoTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             Dispatcher.BeginInvoke(new Action(() => GetSysInfo() ));
+            if (String.IsNullOrWhiteSpace(boundExe) == false) {
+                string activeProcessFileName = (ActiveProcess.GetActiveProcessFileName() + ".exe").ToLower();
+                if (activeProcessFileName != lastActiveProcess)
+                {
+                    Console.WriteLine(activeProcessFileName + " | " + boundExe.ToLower() + " (" + (activeProcessFileName == boundExe.ToLower()) + ")");
+                    // TODO: Only do this when "this.ledControlEnabled" is True
+                    if (activeProcessFileName == boundExe.ToLower())
+                    {
+                        Sharp_SDK.SDK.EnableLedControl(true);
+                        SetKeyColorMatrix(currDevice);
+                    }
+                    else
+                    {
+                        Sharp_SDK.SDK.EnableLedControl(false);
+                    }
+                    lastActiveProcess = activeProcessFileName + "";
+                }
+            }
+            //Console.WriteLine(ActiveProcess.GetActiveProcessFileName());
         }
 
         [HandleProcessCorruptedStateExceptions]
@@ -140,6 +164,8 @@ namespace WpfAlniCoolerMaster
                 lblLedRed.Content = "R:";
                 lblLedRed_All.Content = "R:";
             }
+
+            currDevice = selectedDevice;
         }
 
         // TODO: Rename function to "ButtonDeviceLayout_Click"
@@ -224,13 +250,20 @@ namespace WpfAlniCoolerMaster
             int keyColumnIndex = cbLEDColumn.SelectedIndex;
 
             Sharp_SDK.KEY_COLOR keyColor = colorMatrix.KeyColor[keyRowIndex][keyColumnIndex];
-            keyColor = normalizeColors(keyColor);
+            keyColor = NormalizeColors(keyColor);
 
             Sharp_SDK.SDK.SetLedColor(keyRowIndex, keyColumnIndex, keyColor.r, keyColor.g, keyColor.b);
         }
 
         // TODO: Rename function to "ButtonSetKeyColorMatrix_Click"
         private void ButtonSetKeyColorMatrix_Click(object sender, RoutedEventArgs e)
+        {
+            int selectedIndex = cbDeviceSelect.SelectedIndex;
+            Sharp_SDK.DEVICE_INDEX selectedDevice = (Sharp_SDK.DEVICE_INDEX)selectedIndex;
+            SetKeyColorMatrix(selectedDevice);
+        }
+
+        private void SetKeyColorMatrix(Sharp_SDK.DEVICE_INDEX deviceIndex)
         {
             // Setting the current colors set for each keys (only available when LED Control is enabled)
             //Sharp_SDK.SDK.SetAllLedColor(colorMatrix);
@@ -240,7 +273,7 @@ namespace WpfAlniCoolerMaster
                 for (int j = 0; j < keyColors[i].Length; j++)
                 {
                     Sharp_SDK.KEY_COLOR keyColor = colorMatrix.KeyColor[i][j];
-                    keyColor = normalizeColors(keyColor);
+                    keyColor = NormalizeColors(keyColor, deviceIndex);
 
                     Sharp_SDK.SDK.SetLedColor(i, j, keyColor.r, keyColor.g, keyColor.b);
                 }
@@ -256,7 +289,7 @@ namespace WpfAlniCoolerMaster
             byte blueColor = GetColorValue(tbLEDBlue_All.Text);
 
             Sharp_SDK.KEY_COLOR keyColor = new Sharp_SDK.KEY_COLOR(redColor, greenColor, blueColor);
-            keyColor = normalizeColors(keyColor);
+            keyColor = NormalizeColors(keyColor);
 
             var success = Sharp_SDK.SDK.SetFullLedColor(keyColor.r, keyColor.g, keyColor.b);
             if (success == false)
@@ -301,7 +334,7 @@ namespace WpfAlniCoolerMaster
             keyColor.g = greenColor; // Update the green channel
             keyColor.b = blueColor; // Update the blue channel
             // Normailize the colors incase of a non-RGB LED device
-            keyColor = normalizeColors(keyColor);
+            keyColor = NormalizeColors(keyColor);
 
             // Update the LED Color textboxes with the udpated color values
             tbLEDRed.Text = keyColor.r.ToString();
@@ -340,10 +373,25 @@ namespace WpfAlniCoolerMaster
         /// </summary>
         /// <param name="keyColor">The Key Color to normalize</param>
         /// <returns>Normalized Key Color</returns>
-        private Sharp_SDK.KEY_COLOR normalizeColors(Sharp_SDK.KEY_COLOR keyColor)
+        private Sharp_SDK.KEY_COLOR NormalizeColors(Sharp_SDK.KEY_COLOR keyColor)
         {
             int selectedIndex = cbDeviceSelect.SelectedIndex;
             Sharp_SDK.DEVICE_INDEX selectedDevice = (Sharp_SDK.DEVICE_INDEX)selectedIndex;
+            return NormalizeColors(keyColor, selectedDevice);
+        }
+
+        /// <summary>
+        /// Normalize the Key Color channels
+        /// 
+        /// For Single Color LEDs, sets the Green and Blue channels to the same as the Red channel.
+        /// 
+        /// Otherwise, for RGB LEDs, just returns the supplied Key Color
+        /// </summary>
+        /// <param name="keyColor">The Key Color to normalize</param>
+        /// <param name="selectedDevice">The device to check against (if is Single Color LEDs or RGB LEDs)</param>
+        /// <returns>Normalized Key Color</returns>
+        private Sharp_SDK.KEY_COLOR NormalizeColors(Sharp_SDK.KEY_COLOR keyColor, Sharp_SDK.DEVICE_INDEX selectedDevice)
+        {
             if (isSingleColorLed(selectedDevice))
             {
                 // Set the other channels to the same as the Red channel
@@ -420,7 +468,7 @@ namespace WpfAlniCoolerMaster
             keyColor.g = greenColor; // Update the green channel
             keyColor.b = blueColor; // Update the red channel
             // Normailize the colors incase of a non-RGB LED device
-            keyColor = normalizeColors(keyColor);
+            keyColor = NormalizeColors(keyColor);
 
             // Update the LED Color textboxes with the udpated color values
             tbLEDRed_All.Text = keyColor.r.ToString();
@@ -457,7 +505,7 @@ namespace WpfAlniCoolerMaster
                 // Get the current Key Color from the currently selected Key row and column
                 Sharp_SDK.KEY_COLOR keyColor = colorMatrix.KeyColor[row][column];
                 // Normalize the color incase of Single Color LED device
-                keyColor = normalizeColors(keyColor);
+                keyColor = NormalizeColors(keyColor);
 
                 // Update the Key LED Color textboxes with the new values
                 tbLEDRed.Text = keyColor.r.ToString("F0"); // Update the Red channel
@@ -500,11 +548,11 @@ namespace WpfAlniCoolerMaster
                 {
                     colorMatrix = deviceSettings.ColorMatrix; // Load the current Colors set for each key
                 }
-                keyColorAll = deviceSettings.KeyColorAll; // Load the current Keu Color for All keys
+                keyColorAll = deviceSettings.KeyColorAll; // Load the current Key Color for All keys
             }
 
             // Update the value for the currently selected key
-            // Not needed to update each key at this time(the others will be uopdated the the LED Row or Column selection changes)
+            // Not needed to update each key at this time (the others will be updated the the LED Row or Column selection changes)
             UpdateSelectedLEDColor();
 
             // Update the current value for the All Keys
@@ -519,6 +567,13 @@ namespace WpfAlniCoolerMaster
             DeviceSettings deviceSettings = new DeviceSettings();
             deviceSettings.ColorMatrix = colorMatrix; // Store the current Colors set for each key
             deviceSettings.KeyColorAll = keyColorAll; // Store the current Key Color for All keys
+            if (String.IsNullOrWhiteSpace(boundExe))
+            {
+                deviceSettings.BoundExe = null;
+            } else
+            {
+                deviceSettings.BoundExe = boundExe + "";
+            }
 
             // Convert the Device Settings to a JSON object string
             string output = JsonConvert.SerializeObject(deviceSettings);
@@ -541,15 +596,30 @@ namespace WpfAlniCoolerMaster
                 {
                     colorMatrix = deviceSettings.ColorMatrix; // Load the current Colors set for each key
                 }
-                keyColorAll = deviceSettings.KeyColorAll; // Load the current Keu Color for All keys
+                keyColorAll = deviceSettings.KeyColorAll; // Load the current Key Color for All keys
+
+                if (String.IsNullOrWhiteSpace(deviceSettings.BoundExe))
+                {
+                    boundExe = null;
+                } else
+                {
+                    boundExe = deviceSettings.BoundExe + "";
+                }
             }
 
             // Update the value for the currently selected key
-            // Not needed to update each key at this time(the others will be uopdated the the LED Row or Column selection changes)
+            // Not needed to update each key at this time (the others will be updated the the LED Row or Column selection changes)
             UpdateSelectedLEDColor();
 
             // Update the current value for the All Keys
             UpdateAllLEDColor();
+
+            tbProfileExe.Text = boundExe + "";
+        }
+
+        private void ButtonProfileBind_Click(object sender, RoutedEventArgs e)
+        {
+            boundExe = tbProfileExe.Text + "";
         }
     }
 }

@@ -10,6 +10,7 @@ namespace WpfAlniCoolerMaster
     {
         public Sharp_SDK.COLOR_MATRIX ColorMatrix;
         public Sharp_SDK.KEY_COLOR KeyColorAll;
+        public string BoundExe = null;
 
         public DeviceSettings()
         {
