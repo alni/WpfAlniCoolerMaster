@@ -75,20 +75,24 @@ namespace WpfAlniCoolerMaster
         private void ASysInfoTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             Dispatcher.BeginInvoke(new Action(() => GetSysInfo() ));
+            Console.WriteLine(String.IsNullOrWhiteSpace(boundExe) == false);
             if (String.IsNullOrWhiteSpace(boundExe) == false) {
                 string activeProcessFileName = (ActiveProcess.GetActiveProcessFileName() + ".exe").ToLower();
                 if (activeProcessFileName != lastActiveProcess)
                 {
-                    Console.WriteLine(activeProcessFileName + " | " + boundExe.ToLower() + " (" + (activeProcessFileName == boundExe.ToLower()) + ")");
-                    // TODO: Only do this when "this.ledControlEnabled" is True
-                    if (activeProcessFileName == boundExe.ToLower())
+                    if (boundExe != null)
                     {
-                        Sharp_SDK.SDK.EnableLedControl(true);
-                        SetKeyColorMatrix(currDevice);
-                    }
-                    else
-                    {
-                        Sharp_SDK.SDK.EnableLedControl(false);
+                        Console.WriteLine(activeProcessFileName + " | " + boundExe.ToLower() + " (" + (activeProcessFileName == boundExe.ToLower()) + ")");
+                        // TODO: Only do this when "this.ledControlEnabled" is True
+                        if (activeProcessFileName == boundExe.ToLower())
+                        {
+                            Sharp_SDK.SDK.EnableLedControl(true);
+                            SetKeyColorMatrix(currDevice);
+                        }
+                        else
+                        {
+                            Sharp_SDK.SDK.EnableLedControl(false);
+                        }
                     }
                     lastActiveProcess = activeProcessFileName + "";
                 }
@@ -527,6 +531,7 @@ namespace WpfAlniCoolerMaster
             DeviceSettings deviceSettings = new DeviceSettings();
             deviceSettings.ColorMatrix = colorMatrix; // Store the current Colors set for each key
             deviceSettings.KeyColorAll = keyColorAll; // Store the current Key Color for All keys
+            deviceSettings.BoundExe = null; // No bound process/EXE for default Device Settings
 
             // Convert the Device Settings to a JSON object string
             string output = JsonConvert.SerializeObject(deviceSettings);
@@ -550,6 +555,10 @@ namespace WpfAlniCoolerMaster
                 }
                 keyColorAll = deviceSettings.KeyColorAll; // Load the current Key Color for All keys
             }
+
+            // No bound process/EXE for default Device Settings
+            boundExe = null;
+            tbProfileExe.Text = "";
 
             // Update the value for the currently selected key
             // Not needed to update each key at this time (the others will be updated the the LED Row or Column selection changes)
@@ -614,12 +623,26 @@ namespace WpfAlniCoolerMaster
             // Update the current value for the All Keys
             UpdateAllLEDColor();
 
-            tbProfileExe.Text = boundExe + "";
+            if (String.IsNullOrWhiteSpace(boundExe))
+            {
+                tbProfileExe.Text = "";
+            }
+            else
+            {
+                tbProfileExe.Text = boundExe + "";
+            }
         }
 
         private void ButtonProfileBind_Click(object sender, RoutedEventArgs e)
         {
-            boundExe = tbProfileExe.Text + "";
+            if (String.IsNullOrWhiteSpace(tbProfileExe.Text))
+            {
+                boundExe = null;
+            }
+            else
+            {
+                boundExe = tbProfileExe.Text + "";
+            }
         }
     }
 }
