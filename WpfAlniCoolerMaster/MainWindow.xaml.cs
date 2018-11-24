@@ -140,6 +140,12 @@ namespace WpfAlniCoolerMaster
 
             // Try to convert the index to a device enum and set it as the currently controlled
             Sharp_SDK.DEVICE_INDEX selectedDevice = (Sharp_SDK.DEVICE_INDEX)selectedIndex; // convert to enum
+
+            SetDevice(selectedDevice);
+        }
+
+        private void SetDevice(Sharp_SDK.DEVICE_INDEX selectedDevice)
+        { 
             Sharp_SDK.SDK.SetControlDevice(selectedDevice); // Try to set it as controlled
             Sharp_SDK.SDK.EnableLedControl(ledControlEnabled); // Enable/Disable LED Control
             if (ledControlEnabled)
@@ -149,7 +155,7 @@ namespace WpfAlniCoolerMaster
             }
 
             // Change the color setting states based on if it is a RGB Device or not (single color LEDs)
-            bool isSingleColor = isSingleColorLed(selectedDevice);
+            bool isSingleColor = IsSingleColorLed(selectedDevice);
 
             // Only enable Green and Blue color textboxes if RGB LEDs
             tbLEDGreen.IsEnabled = !isSingleColor;
@@ -354,7 +360,7 @@ namespace WpfAlniCoolerMaster
         /// </summary>
         /// <param name="device"></param>
         /// <returns>True when Single Color LED. False if supports RGB Colors</returns>
-        private bool isSingleColorLed(Sharp_SDK.DEVICE_INDEX device)
+        private bool IsSingleColorLed(Sharp_SDK.DEVICE_INDEX device)
         {
             bool isSingleColorLed = false; // Default to RGB
             switch (device)
@@ -396,7 +402,7 @@ namespace WpfAlniCoolerMaster
         /// <returns>Normalized Key Color</returns>
         private Sharp_SDK.KEY_COLOR NormalizeColors(Sharp_SDK.KEY_COLOR keyColor, Sharp_SDK.DEVICE_INDEX selectedDevice)
         {
-            if (isSingleColorLed(selectedDevice))
+            if (IsSingleColorLed(selectedDevice))
             {
                 // Set the other channels to the same as the Red channel
                 keyColor.g = keyColor.r; // Green channel
@@ -528,7 +534,7 @@ namespace WpfAlniCoolerMaster
         private void ButtonSave_Click(object sender, RoutedEventArgs e)
         {
             // Create new Device Settings object
-            DeviceSettings deviceSettings = new DeviceSettings();
+            DeviceSettings deviceSettings = new DeviceSettings(currDevice);
             deviceSettings.ColorMatrix = colorMatrix; // Store the current Colors set for each key
             deviceSettings.KeyColorAll = keyColorAll; // Store the current Key Color for All keys
             deviceSettings.BoundExe = null; // No bound process/EXE for default Device Settings
@@ -554,6 +560,9 @@ namespace WpfAlniCoolerMaster
                     colorMatrix = deviceSettings.ColorMatrix; // Load the current Colors set for each key
                 }
                 keyColorAll = deviceSettings.KeyColorAll; // Load the current Key Color for All keys
+                currDevice = deviceSettings.SelectedDevice;
+
+                cbDeviceSelect.SelectedIndex = (int)currDevice;
             }
 
             // No bound process/EXE for default Device Settings
@@ -566,6 +575,8 @@ namespace WpfAlniCoolerMaster
 
             // Update the current value for the All Keys
             UpdateAllLEDColor();
+
+            SetDevice(currDevice);
         }
 
         private void ButtonProfileSave_Click(object sender, RoutedEventArgs e)
@@ -573,7 +584,7 @@ namespace WpfAlniCoolerMaster
             int selectedProfile = cbProfile.SelectedIndex;
 
             // Create new Device Settings object
-            DeviceSettings deviceSettings = new DeviceSettings();
+            DeviceSettings deviceSettings = new DeviceSettings(currDevice);
             deviceSettings.ColorMatrix = colorMatrix; // Store the current Colors set for each key
             deviceSettings.KeyColorAll = keyColorAll; // Store the current Key Color for All keys
             if (String.IsNullOrWhiteSpace(boundExe))
@@ -606,6 +617,9 @@ namespace WpfAlniCoolerMaster
                     colorMatrix = deviceSettings.ColorMatrix; // Load the current Colors set for each key
                 }
                 keyColorAll = deviceSettings.KeyColorAll; // Load the current Key Color for All keys
+                currDevice = deviceSettings.SelectedDevice;
+
+                cbDeviceSelect.SelectedIndex = (int)currDevice;
 
                 if (String.IsNullOrWhiteSpace(deviceSettings.BoundExe))
                 {
@@ -622,6 +636,8 @@ namespace WpfAlniCoolerMaster
 
             // Update the current value for the All Keys
             UpdateAllLEDColor();
+
+            SetDevice(currDevice);
 
             if (String.IsNullOrWhiteSpace(boundExe))
             {
