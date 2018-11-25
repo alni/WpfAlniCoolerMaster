@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.ExceptionServices;
 using System.Text;
@@ -659,6 +661,48 @@ namespace WpfAlniCoolerMaster
             {
                 boundExe = tbProfileExe.Text + "";
             }
+        }
+
+        private void ButtonExportFile_Click(object sender, RoutedEventArgs e)
+        {
+            // Create new Device Settings object
+            DeviceSettings deviceSettings = new DeviceSettings(currDevice);
+            deviceSettings.ColorMatrix = colorMatrix; // Store the current Colors set for each key
+            deviceSettings.KeyColorAll = keyColorAll; // Store the current Key Color for All keys
+            if (String.IsNullOrWhiteSpace(boundExe))
+            {
+                deviceSettings.BoundExe = null;
+            }
+            else
+            {
+                deviceSettings.BoundExe = boundExe + "";
+            }
+
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Formatting = Formatting.Indented;
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "JSON Device Settings File|*.json";
+            saveFileDialog.Title = "Save a Device Settings/Profile";
+            saveFileDialog.ShowDialog();
+
+            // If the file name is not an empty string, open it for saving.
+            if (String.IsNullOrWhiteSpace(saveFileDialog.FileName) == false)
+            {
+                FileStream fs = (FileStream)saveFileDialog.OpenFile();
+                using (StreamWriter sw = new StreamWriter(fs))
+                using (JsonWriter writer = new JsonTextWriter(sw))
+                {
+                    serializer.Serialize(writer, deviceSettings);
+                }
+                fs.Close();
+            }
+        }
+
+        // TODO: Implement Import File
+        private void ButtonImportFile_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("#TODO: Please Implement Me :)", "Not Yet Implemented...");
         }
     }
 }

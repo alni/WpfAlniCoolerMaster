@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAlniCoolerMaster"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="587" MinWidth="597" MinHeight="660" SizeToContent="WidthAndHeight" Margin="0" Padding="0" Closing="Window_Closing">
+        Title="MainWindow" Height="775" Width="587" MinWidth="597" MinHeight="785" SizeToContent="WidthAndHeight" Margin="0" Padding="0" Closing="Window_Closing">
     <Grid Margin="0,0,10,10">
         <Grid Height="110" Margin="10,120,0,0" VerticalAlignment="Top" Width="559">
             <Label Content="Select Device:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
@@ -64,7 +64,7 @@
             </ComboBox>
             <Button x:Name="btnLedEffect" Content="Set" HorizontalAlignment="Left" Margin="444,75,0,0" VerticalAlignment="Top" Width="75" Click="ButtonLedEffect_Click" IsEnabled="False"/>
         </Grid>
-        <GroupBox Header="Set LED color for every key" Height="131" Margin="10,235,0,0" VerticalAlignment="Top" Width="559" Background="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}">
+        <GroupBox Header="Set LED color for every key" Height="131" Margin="15,235,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}">
             <Grid Margin="10,0,0,0" Width="539" Height="121">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="34*"/>
@@ -118,7 +118,7 @@
                 <Button x:Name="btnLEDAllKeys" Content="Set ALL Key" HorizontalAlignment="Left" Margin="138,84,0,0" VerticalAlignment="Top" Width="75" Click="ButtonSetKeyColorMatrix_Click" Grid.Column="1" Height="20"/>
             </Grid>
         </GroupBox>
-        <GroupBox Header="Set All LED" Height="104" Margin="10,371,0,0" VerticalAlignment="Top" Width="559" Background="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}">
+        <GroupBox Header="Set All LED" Height="104" Margin="15,371,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}">
             <Grid Margin="10,0,0,0" Width="539" Height="94">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"/>
@@ -135,7 +135,7 @@
         </GroupBox>
         <CheckBox x:Name="checkboxKeyEffect" Content="Key Effect" HorizontalAlignment="Left" Margin="10,489,0,0" VerticalAlignment="Top" Checked="CheckboxKeyEffect_Checked" Unchecked="CheckboxKeyEffect_Unchecked"/>
         <Label Content="PS: If Key Effect Function is enabled, the KEY_DOWN will be ignored." HorizontalAlignment="Left" Margin="28,509,0,0" VerticalAlignment="Top"/>
-        <GroupBox Header="System information" Height="105" Margin="10,10,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}" Width="559">
+        <GroupBox Header="System information" Height="105" Margin="15,10,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}">
             <Grid Margin="10,0,0,0" Height="95" Width="539">
                 <Label Content="System Time:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
                 <TextBox x:Name="tbSystemTime" HorizontalAlignment="Left" Height="23" Margin="94,13,0,0" TextWrapping="Wrap" Text="2018-11-12 14:40:15" VerticalAlignment="Top" Width="120" IsEnabled="False"/>
@@ -148,21 +148,41 @@
                 <TextBox x:Name="tbVolumePeek" HorizontalAlignment="Left" Height="23" Margin="469,41,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="42" IsEnabled="False"/>
             </Grid>
         </GroupBox>
-        <Button Content="Save" HorizontalAlignment="Left" Margin="10,555,0,0" VerticalAlignment="Top" Width="75" Click="ButtonSave_Click"/>
-        <Button Content="Load" HorizontalAlignment="Left" Margin="90,555,0,0" VerticalAlignment="Top" Width="75" Click="ButtonLoad_Click"/>
-        <ComboBox x:Name="cbProfile" HorizontalAlignment="Left" Margin="287,555,0,-1" VerticalAlignment="Top" Width="120" SelectedIndex="0">
-            <ComboBoxItem Content="Profile 1"/>
-            <ComboBoxItem Content="Profile 2"/>
-            <ComboBoxItem Content="Profile 3"/>
-            <ComboBoxItem Content="Profile 4"/>
-            <ComboBoxItem Content="Profile 5"/>
-        </ComboBox>
-        <Label Content="Select Profile:" HorizontalAlignment="Left" Margin="201,551,0,-1" VerticalAlignment="Top" Height="24"/>
-        <Button Content="Save Profile" HorizontalAlignment="Left" Margin="412,554,0,0" VerticalAlignment="Top" Width="75" Click="ButtonProfileSave_Click"/>
-        <Button Content="Load Profile" HorizontalAlignment="Left" Margin="492,554,0,0" VerticalAlignment="Top" Width="75" Click="ButtonProfileLoad_Click"/>
-        <Label Content="Bind Profile to EXE:" HorizontalAlignment="Left" Margin="250,583,0,0" VerticalAlignment="Top" Width="112"/>
-        <TextBox x:Name="tbProfileExe" HorizontalAlignment="Left" Height="23" Margin="367,586,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Bind Profile" HorizontalAlignment="Left" Margin="492,586,0,0" VerticalAlignment="Top" Width="75"/>
+
+        <GroupBox Header="Device Settings/Profiles" HorizontalAlignment="Left" Height="150" Margin="10,0,0,0" VerticalAlignment="Bottom" Width="569">
+            <Grid Margin="0,0,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="23*"/>
+                    <RowDefinition Height="15*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="159*"/>
+                    <ColumnDefinition Width="398*"/>
+                </Grid.ColumnDefinitions>
+                <Button Content="Save" HorizontalAlignment="Left" Margin="0,26,0,0" VerticalAlignment="Top" Width="75" Click="ButtonSave_Click" Height="20"/>
+                <Button Content="Load" HorizontalAlignment="Left" Margin="80,26,0,0" VerticalAlignment="Top" Width="75" Click="ButtonLoad_Click" Height="20"/>
+                <ComboBox x:Name="cbProfile" HorizontalAlignment="Left" Margin="118,10,0,0" VerticalAlignment="Top" Width="120" SelectedIndex="0" Grid.Column="1" Height="22">
+                    <ComboBoxItem Content="Profile 1"/>
+                    <ComboBoxItem Content="Profile 2"/>
+                    <ComboBoxItem Content="Profile 3"/>
+                    <ComboBoxItem Content="Profile 4"/>
+                    <ComboBoxItem Content="Profile 5"/>
+                </ComboBox>
+                <Label Content="Select Profile:" HorizontalAlignment="Left" Margin="32,6,0,0" VerticalAlignment="Top" Height="24" Grid.Column="1" Width="81"/>
+                <Button Content="Save Profile" HorizontalAlignment="Left" Margin="243,10,0,0" VerticalAlignment="Top" Width="75" Click="ButtonProfileSave_Click" Grid.Column="1" Height="20"/>
+                <Button Content="Load Profile" HorizontalAlignment="Left" Margin="323,10,0,0" VerticalAlignment="Top" Width="75" Click="ButtonProfileLoad_Click" Grid.Column="1" Height="20"/>
+                <Label Content="Bind Profile to EXE:" HorizontalAlignment="Left" Margin="81,38,0,0" VerticalAlignment="Top" Width="112" Grid.Column="1" Height="26"/>
+                <TextBox x:Name="tbProfileExe" HorizontalAlignment="Left" Height="23" Margin="198,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
+                <Button Content="Bind Profile" HorizontalAlignment="Left" Margin="323,41,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1" Height="20"/>
+
+
+
+                <Button Content="Export" HorizontalAlignment="Left" VerticalAlignment="Bottom" Width="75" Click="ButtonExportFile_Click" Height="20" Grid.Row="1"/>
+                <Button Content="Import" HorizontalAlignment="Left" Margin="80,0,0,0" VerticalAlignment="Bottom" Width="75" Click="ButtonImportFile_Click" Height="20" Grid.Row="1"/>
+                <Label Content="Default Settings" HorizontalAlignment="Left" VerticalAlignment="Top" Width="159"/>
+                <Label Content="Import/Export from/to File" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Width="159"/>
+            </Grid>
+        </GroupBox>
 
     </Grid>
 </Window>
