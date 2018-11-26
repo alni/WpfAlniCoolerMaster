@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfAlniCoolerMaster"
         mc:Ignorable="d"
-        Title="MainWindow" Height="775" Width="587" MinWidth="597" MinHeight="785" SizeToContent="WidthAndHeight" Margin="0" Padding="0" Closing="Window_Closing">
+        Title="MainWindow" Height="730" Width="587" MinWidth="607" MinHeight="740" SizeToContent="WidthAndHeight" Margin="0" Padding="0" Closing="Window_Closing">
     <Grid Margin="0,0,10,10">
         <Grid Height="110" Margin="10,120,0,0" VerticalAlignment="Top" Width="559">
             <Label Content="Select Device:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
@@ -64,15 +64,10 @@
             </ComboBox>
             <Button x:Name="btnLedEffect" Content="Set" HorizontalAlignment="Left" Margin="444,75,0,0" VerticalAlignment="Top" Width="75" Click="ButtonLedEffect_Click" IsEnabled="False"/>
         </Grid>
-        <GroupBox Header="Set LED color for every key" Height="131" Margin="15,235,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}">
+        <GroupBox Header="Set LED color for every key" Height="131" Margin="10,235,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}">
             <Grid Margin="10,0,0,0" Width="539" Height="121">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="34*"/>
-                    <ColumnDefinition Width="505*"/>
-                    <ColumnDefinition Width="0*"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Row:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Grid.ColumnSpan="2" Width="38" Height="26"/>
-                <ComboBox x:Name="cbLEDRow" HorizontalAlignment="Left" Margin="19,14,0,0" VerticalAlignment="Top" Width="120" Grid.Column="1" Height="22" SelectedIndex="0" SelectionChanged="ComboBoxLED_SelectionChanged">
+                <Label Content="Row:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="38" Height="26"/>
+                <ComboBox x:Name="cbLEDRow" HorizontalAlignment="Left" Margin="50,14,0,0" VerticalAlignment="Top" Width="120" Height="22" SelectedIndex="0" SelectionChanged="ComboBoxLED_SelectionChanged">
                     <ComboBoxItem Content="0"/>
                     <ComboBoxItem Content="1"/>
                     <ComboBoxItem Content="2"/>
@@ -81,8 +76,8 @@
                     <ComboBoxItem Content="5"/>
                     <ComboBoxItem Content="6"/>
                 </ComboBox>
-                <Label Content="Column:" HorizontalAlignment="Left" Margin="150,10,0,0" VerticalAlignment="Top" Grid.Column="1" Height="26" Width="54"/>
-                <ComboBox x:Name="cbLEDColumn" HorizontalAlignment="Left" Margin="209,14,0,0" VerticalAlignment="Top" Width="120" Grid.Column="1" Height="22" SelectedIndex="0"  SelectionChanged="ComboBoxLED_SelectionChanged">
+                <Label Content="Column:" HorizontalAlignment="Left" Margin="181,10,0,0" VerticalAlignment="Top" Height="26" Width="54"/>
+                <ComboBox x:Name="cbLEDColumn" HorizontalAlignment="Left" Margin="240,14,0,0" VerticalAlignment="Top" Width="120" Height="22" SelectedIndex="0"  SelectionChanged="ComboBoxLED_SelectionChanged">
                     <ComboBoxItem Content="0"/>
                     <ComboBoxItem Content="1"/>
                     <ComboBoxItem Content="2"/>
@@ -108,34 +103,30 @@
                     <ComboBoxItem Content="22"/>
                     <ComboBoxItem Content="23"/>
                 </ComboBox>
-                <Label x:Name="lblLedRed" Content="R:" HorizontalAlignment="Left" Margin="0,45,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.733,5.289" Width="48" Grid.ColumnSpan="2" Height="26" HorizontalContentAlignment="Right" />
-                <TextBox x:Name="tbLEDRed" HorizontalAlignment="Left" Height="23" Margin="19,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" Grid.Column="1" TextChanged="TextBoxLED_TextChanged"/>
-                <Label Content="G:" HorizontalAlignment="Left" Margin="121,45,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.733,5.289" Grid.Column="1" Height="26" Width="21"/>
-                <TextBox x:Name="tbLEDGreen" HorizontalAlignment="Left" Height="23" Margin="147,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" Grid.Column="1" TextChanged="TextBoxLED_TextChanged"/>
-                <Label Content="B:" HorizontalAlignment="Left" Margin="248,45,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.733,5.289" Grid.Column="1" Height="26" Width="19"/>
-                <TextBox x:Name="tbLEDBlue" HorizontalAlignment="Left" Height="23" Margin="272,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" RenderTransformOrigin="1.184,0.696" Grid.Column="1" TextChanged="TextBoxLED_TextChanged"/>
-                <Button x:Name="btnLEDSingleKey" Content="Set Single Key" HorizontalAlignment="Left" Margin="19,84,0,0" VerticalAlignment="Top" Width="90" Click="ButtonSetSingleKeyColor_Click" Grid.Column="1" Height="20"/>
-                <Button x:Name="btnLEDAllKeys" Content="Set ALL Key" HorizontalAlignment="Left" Margin="138,84,0,0" VerticalAlignment="Top" Width="75" Click="ButtonSetKeyColorMatrix_Click" Grid.Column="1" Height="20"/>
+                <Label x:Name="lblLedRed" Content="R:" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Width="40" Height="26" HorizontalContentAlignment="Right" />
+                <TextBox x:Name="tbLEDRed" HorizontalAlignment="Left" Height="23" Margin="50,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" TextChanged="TextBoxLED_TextChanged"/>
+                <Label Content="G:" HorizontalAlignment="Left" Margin="152,45,0,0" VerticalAlignment="Top" Height="26" Width="21"/>
+                <TextBox x:Name="tbLEDGreen" HorizontalAlignment="Left" Height="23" Margin="178,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" TextChanged="TextBoxLED_TextChanged"/>
+                <Label Content="B:" HorizontalAlignment="Left" Margin="279,45,0,0" VerticalAlignment="Top" Height="26" Width="19"/>
+                <TextBox x:Name="tbLEDBlue" HorizontalAlignment="Left" Height="23" Margin="303,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" RenderTransformOrigin="1.184,0.696" Grid.Column="1" TextChanged="TextBoxLED_TextChanged"/>
+                <Button x:Name="btnLEDSingleKey" Content="Set Single Key" HorizontalAlignment="Left" Margin="50,84,0,0" VerticalAlignment="Top" Width="90" Click="ButtonSetSingleKeyColor_Click" Height="20"/>
+                <Button x:Name="btnLEDAllKeys" Content="Set ALL Key" HorizontalAlignment="Left" Margin="169,84,0,0" VerticalAlignment="Top" Width="75" Click="ButtonSetKeyColorMatrix_Click" Height="20"/>
             </Grid>
         </GroupBox>
-        <GroupBox Header="Set All LED" Height="104" Margin="15,371,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}">
+        <GroupBox Header="Set All LED" Height="104" Margin="10,371,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}">
             <Grid Margin="10,0,0,0" Width="539" Height="94">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"/>
-                    <ColumnDefinition Width="44*"/>
-                </Grid.ColumnDefinitions>
-                <Label x:Name="lblLedRed_All" Content="R:" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.733,5.289" Width="46" Grid.ColumnSpan="2"  HorizontalContentAlignment="Right"/>
-                <TextBox x:Name="tbLEDRed_All" HorizontalAlignment="Left" Height="23" Margin="17,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" Grid.Column="1" TextChanged="TextBoxLED_TextChanged_All" RenderTransformOrigin="1.228,0.696"/>
-                <Label Content="G:" HorizontalAlignment="Left" Margin="116,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.733,5.289" Grid.Column="1"/>
-                <TextBox x:Name="tbLEDGreen_All" HorizontalAlignment="Left" Height="23" Margin="142,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" Grid.Column="1" TextChanged="TextBoxLED_TextChanged_All"/>
-                <Label Content="B:" HorizontalAlignment="Left" Margin="247,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.733,5.289" Grid.Column="1"/>
-                <TextBox x:Name="tbLEDBlue_All" HorizontalAlignment="Left" Height="23" Margin="271,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" RenderTransformOrigin="1.184,0.696" Grid.Column="1" TextChanged="TextBoxLED_TextChanged_All"/>
-                <Button x:Name="btnLEDColor_All" Content="Set color" HorizontalAlignment="Left" Margin="17,48,0,0" VerticalAlignment="Top" Width="74" Grid.Column="1" Click="ButtonSetFullKeyColor_Click"/>
+                <Label x:Name="lblLedRed_All" Content="R:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="40" HorizontalContentAlignment="Right"/>
+                <TextBox x:Name="tbLEDRed_All" HorizontalAlignment="Left" Height="23" Margin="50,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57" PreviewTextInput="NumberValidationTextBox" TextChanged="TextBoxLED_TextChanged_All" />
+                <Label Content="G:" HorizontalAlignment="Left" Margin="152,10,0,0" VerticalAlignment="Top" />
+                <TextBox x:Name="tbLEDGreen_All" HorizontalAlignment="Left" Height="23" Margin="178,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57" PreviewTextInput="NumberValidationTextBox" TextChanged="TextBoxLED_TextChanged_All"/>
+                <Label Content="B:" HorizontalAlignment="Left" Margin="279,10,0,0" VerticalAlignment="Top" />
+                <TextBox x:Name="tbLEDBlue_All" HorizontalAlignment="Left" Height="23" Margin="303,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" TextChanged="TextBoxLED_TextChanged_All"/>
+                <Button x:Name="btnLEDColor_All" Content="Set color" HorizontalAlignment="Left" Margin="50,48,0,0" VerticalAlignment="Top" Width="74" Click="ButtonSetFullKeyColor_Click"/>
             </Grid>
         </GroupBox>
         <CheckBox x:Name="checkboxKeyEffect" Content="Key Effect" HorizontalAlignment="Left" Margin="10,489,0,0" VerticalAlignment="Top" Checked="CheckboxKeyEffect_Checked" Unchecked="CheckboxKeyEffect_Unchecked"/>
         <Label Content="PS: If Key Effect Function is enabled, the KEY_DOWN will be ignored." HorizontalAlignment="Left" Margin="28,509,0,0" VerticalAlignment="Top"/>
-        <GroupBox Header="System information" Height="105" Margin="15,10,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}">
+        <GroupBox Header="System information" Height="105" Margin="10,10,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InfoBrushKey}}">
             <Grid Margin="10,0,0,0" Height="95" Width="539">
                 <Label Content="System Time:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
                 <TextBox x:Name="tbSystemTime" HorizontalAlignment="Left" Height="23" Margin="94,13,0,0" TextWrapping="Wrap" Text="2018-11-12 14:40:15" VerticalAlignment="Top" Width="120" IsEnabled="False"/>
@@ -149,7 +140,7 @@
             </Grid>
         </GroupBox>
 
-        <GroupBox Header="Device Settings/Profiles" HorizontalAlignment="Left" Height="150" Margin="10,0,0,0" VerticalAlignment="Bottom" Width="569">
+        <GroupBox Header="Device Settings/Profiles" Height="150" Margin="10,0,0,0" VerticalAlignment="Bottom">
             <Grid Margin="0,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="23*"/>

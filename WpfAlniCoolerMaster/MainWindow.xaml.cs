@@ -610,8 +610,19 @@ namespace WpfAlniCoolerMaster
 
             // Get the Default Device Settings JSON object string
             string output = Properties.Settings.Default.ProfilesDeviceSettingsJson[selectedProfile] + "";
+
+            LoadDeviceSettings(output);
+        }
+
+        private void LoadDeviceSettings(string settings)
+        {
             // Convert the JSON boject string to a Device Settings object
-            DeviceSettings deviceSettings = JsonConvert.DeserializeObject<DeviceSettings>(output);
+            DeviceSettings deviceSettings = JsonConvert.DeserializeObject<DeviceSettings>(settings);
+            LoadDeviceSettings(deviceSettings);
+        }
+
+        private void LoadDeviceSettings(DeviceSettings deviceSettings)
+        {
             if (deviceSettings != null)
             {
                 if (deviceSettings.ColorMatrix.KeyColor != null)
@@ -626,7 +637,8 @@ namespace WpfAlniCoolerMaster
                 if (String.IsNullOrWhiteSpace(deviceSettings.BoundExe))
                 {
                     boundExe = null;
-                } else
+                }
+                else
                 {
                     boundExe = deviceSettings.BoundExe + "";
                 }
@@ -702,7 +714,34 @@ namespace WpfAlniCoolerMaster
         // TODO: Implement Import File
         private void ButtonImportFile_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("#TODO: Please Implement Me :)", "Not Yet Implemented...");
+            //MessageBox.Show("#TODO: Please Implement Me :)", "Not Yet Implemented...");
+            DeviceSettings deviceSettings = null;
+
+            JsonSerializer serializer = new JsonSerializer();
+            serializer.Formatting = Formatting.Indented;
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "JSON Device Settings File|*.json";
+            openFileDialog.Title = "Open a Device Settings/Proifle";
+            openFileDialog.ShowDialog();
+
+            if (String.IsNullOrWhiteSpace(openFileDialog.FileName) == false)
+            {
+                FileStream fs = (FileStream)openFileDialog.OpenFile();
+                using (StreamReader sr = new StreamReader(fs))
+                using (JsonReader reader = new JsonTextReader(sr))
+                {
+                    // Convert the JSON object string to a Device Settings object
+                    deviceSettings = serializer.Deserialize<DeviceSettings>(reader);
+                    
+                }
+                fs.Close();
+            }
+
+            if (deviceSettings != null)
+            {
+                LoadDeviceSettings(deviceSettings);
+            }
         }
     }
 }
