@@ -1,22 +1,12 @@
 ﻿using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.ExceptionServices;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace WpfAlniCoolerMaster
 {
@@ -114,7 +104,7 @@ namespace WpfAlniCoolerMaster
 
             // TODO: Implement CPU Usage Info
             long cpuUsage = Sharp_SDK.SDK.GetNowCPUUsage();
-            tbCPUUsage.Text = cpuUsage.ToString();
+            tbCPUUsage.Text = ((int)cpuUsage).ToString();
             //ToolTip toolTip = new ToolTip();
             //toolTip.Content = cpuUsage.ToString();
             //tbCPUUsage.ToolTip = toolTip;
@@ -323,7 +313,7 @@ namespace WpfAlniCoolerMaster
         // TODO: Rename function to "ButtonCPUStatus_Click"
         private void ButtonCPUStatus_Click(object sender, RoutedEventArgs e)
         {
-
+            Console.WriteLine(tbCPUUsage.Text);
         }
 
         // Text Changes to the LED color textboxes
@@ -553,7 +543,7 @@ namespace WpfAlniCoolerMaster
         {
             // Get the Default Device Settings JSON object string
             string output = Properties.Settings.Default.DefaultDeviceSettingsJson + "";
-            // Convert the JSON boject string to a Device Settings object
+            // Convert the JSON object string to a Device Settings object
             DeviceSettings deviceSettings = JsonConvert.DeserializeObject<DeviceSettings>(output);
             if (deviceSettings != null)
             {
@@ -616,7 +606,7 @@ namespace WpfAlniCoolerMaster
 
         private void LoadDeviceSettings(string settings)
         {
-            // Convert the JSON boject string to a Device Settings object
+            // Convert the JSON object string to a Device Settings object
             DeviceSettings deviceSettings = JsonConvert.DeserializeObject<DeviceSettings>(settings);
             LoadDeviceSettings(deviceSettings);
         }
@@ -733,7 +723,6 @@ namespace WpfAlniCoolerMaster
                 {
                     // Convert the JSON object string to a Device Settings object
                     deviceSettings = serializer.Deserialize<DeviceSettings>(reader);
-                    
                 }
                 fs.Close();
             }
