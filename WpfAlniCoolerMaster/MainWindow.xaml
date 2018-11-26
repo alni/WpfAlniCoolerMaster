@@ -104,7 +104,7 @@
                     <ComboBoxItem Content="22"/>
                     <ComboBoxItem Content="23"/>
                 </ComboBox>
-                <xctk:ColorPicker x:Name="clrPickerLED"  HorizontalAlignment="Left" Margin="370,45,0,0" VerticalAlignment="Top" Width="60" Height="26" ColorMode="ColorCanvas" SelectedColorChanged="ColorPickerLED_SelectedColorChanged" ></xctk:ColorPicker>
+                <xctk:ColorPicker x:Name="clrPickerLED"  HorizontalAlignment="Left" Margin="370,45,0,0" VerticalAlignment="Top" Width="60" Height="26" ColorMode="ColorCanvas" SelectedColorChanged="ColorPickerLED_SelectedColorChanged" SelectedColor="#FF000000" ></xctk:ColorPicker>
                 <Label x:Name="lblLedRed" Content="R:" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Width="40" Height="26" HorizontalContentAlignment="Right" />
                 <TextBox x:Name="tbLEDRed" HorizontalAlignment="Left" Height="23" Margin="50,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" TextChanged="TextBoxLED_TextChanged"/>
                 <Label Content="G:" HorizontalAlignment="Left" Margin="152,45,0,0" VerticalAlignment="Top" Height="26" Width="21"/>
@@ -123,6 +123,7 @@
                 <TextBox x:Name="tbLEDGreen_All" HorizontalAlignment="Left" Height="23" Margin="178,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57" PreviewTextInput="NumberValidationTextBox" TextChanged="TextBoxLED_TextChanged_All"/>
                 <Label Content="B:" HorizontalAlignment="Left" Margin="279,10,0,0" VerticalAlignment="Top" />
                 <TextBox x:Name="tbLEDBlue_All" HorizontalAlignment="Left" Height="23" Margin="303,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" TextChanged="TextBoxLED_TextChanged_All"/>
+                <xctk:ColorPicker x:Name="clrPickerLED_All"  HorizontalAlignment="Left" Margin="370,10,0,0" VerticalAlignment="Top" Width="60" Height="26" ColorMode="ColorCanvas" SelectedColorChanged="ColorPickerLED_All_SelectedColorChanged" SelectedColor="#FF000000" ></xctk:ColorPicker>
                 <Button x:Name="btnLEDColor_All" Content="Set color" HorizontalAlignment="Left" Margin="50,48,0,0" VerticalAlignment="Top" Width="74" Click="ButtonSetFullKeyColor_Click"/>
             </Grid>
         </GroupBox>

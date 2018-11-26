@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -489,6 +489,13 @@ namespace WpfAlniCoolerMaster
             tbLEDGreen_All.Text = keyColor.g.ToString();
             tbLEDBlue_All.Text = keyColor.b.ToString();
 
+            // Update the LED Color Picker value
+            System.Windows.Media.Color currColor = (System.Windows.Media.Color)clrPickerLED_All.SelectedColor;
+            currColor.R = keyColor.r;
+            currColor.G = keyColor.g;
+            currColor.B = keyColor.b;
+            clrPickerLED_All.SelectedColor = currColor;
+
             // Set the Key Color for all keys with the new Key Color
             keyColorAll = keyColor;
         }
@@ -525,6 +532,13 @@ namespace WpfAlniCoolerMaster
                 tbLEDRed.Text = keyColor.r.ToString("F0"); // Update the Red channel
                 tbLEDGreen.Text = keyColor.g.ToString("F0"); // Update the Green channel
                 tbLEDBlue.Text = keyColor.b.ToString("F0"); // Update the Blue channel
+
+                // Update the Key LED Color Picker value
+                System.Windows.Media.Color currColor = (System.Windows.Media.Color)clrPickerLED.SelectedColor;
+                currColor.R = keyColor.r;
+                currColor.G = keyColor.g;
+                currColor.B = keyColor.b;
+                clrPickerLED.SelectedColor = currColor;
             }
         }
 
@@ -747,18 +761,41 @@ namespace WpfAlniCoolerMaster
 
         private void ColorPickerLED_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e)
         {
-            System.Windows.Media.Color currColor = clrPickerLED.SelectedColor.Value;
-            bool isSingleColor = IsSingleColorLed(this.currDevice);
-            if (isSingleColor)
+            if (this.IsInitialized == true)
             {
-                currColor.G = currColor.R;
-                currColor.B = currColor.R;
-                currColor.A = 128;
+                System.Windows.Media.Color currColor = clrPickerLED.SelectedColor.Value;
+                bool isSingleColor = IsSingleColorLed(this.currDevice);
+                if (isSingleColor)
+                {
+                    currColor.G = currColor.R;
+                    currColor.B = currColor.R;
+                    currColor.A = 128;
 
-                clrPickerLED.SelectedColor = currColor;
+                    clrPickerLED.SelectedColor = currColor;
+                }
+
+                Sharp_SDK.KEY_COLOR keyColor = SetCurrentKeyColor(currColor.R, currColor.G, currColor.B);
             }
+        }
 
-            Sharp_SDK.KEY_COLOR keyColor = SetCurrentKeyColor(currColor.R, currColor.G, currColor.B);
+        private void ColorPickerLED_All_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e)
+        {
+            if (this.IsInitialized == true)
+            {
+                System.Windows.Media.Color currColor = clrPickerLED_All.SelectedColor.Value;
+                bool isSingleColor = IsSingleColorLed(this.currDevice);
+                if (isSingleColor)
+                {
+                    currColor.G = currColor.R;
+                    currColor.B = currColor.R;
+                    currColor.A = 128;
+
+                    clrPickerLED_All.SelectedColor = currColor;
+                }
+
+                // Update the Key Color for all keys with the new values
+                UpdateAllLEDColor(currColor.R, currColor.G, currColor.B);
+            }
         }
     }
 }
