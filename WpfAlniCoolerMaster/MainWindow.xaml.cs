@@ -319,17 +319,32 @@ namespace WpfAlniCoolerMaster
         // Text Changes to the LED color textboxes
         private void TextBoxLED_TextChanged(object sender, TextChangedEventArgs e)
         {
+            Sharp_SDK.KEY_COLOR keyColor = SetCurrentKeyColor(tbLEDRed.Text, tbLEDGreen.Text, tbLEDBlue.Text);
+
+            // Update the LED Color textboxes with the udpated color values
+            tbLEDRed.Text = keyColor.r.ToString();
+            tbLEDGreen.Text = keyColor.g.ToString();
+            tbLEDBlue.Text = keyColor.b.ToString();
+        }
+
+        private Sharp_SDK.KEY_COLOR SetCurrentKeyColor(string strRedColor, string strGreenColor, string strBlueColor)
+        {
+            // Convert the text of the LED color textboxes to a valid color value
+            byte redColor = GetColorValue(strRedColor); // Convert the Red Color
+            byte greenColor = GetColorValue(strGreenColor); // Convert the Green Color
+            byte blueColor = GetColorValue(strBlueColor); // Convert the Blue Color
+
+            return SetCurrentKeyColor(redColor, greenColor, blueColor);
+        }
+
+        private Sharp_SDK.KEY_COLOR SetCurrentKeyColor(byte redColor, byte greenColor, byte blueColor)
+        {
             // Get the currently selected key row and column
             int row = cbLEDRow.SelectedIndex;
             int column = cbLEDColumn.SelectedIndex;
 
             // Get the current Key color of the selected key
             Sharp_SDK.KEY_COLOR keyColor = colorMatrix.KeyColor[row][column];
-
-            // Convert the text of the LED color textboxes to a valid color value
-            byte redColor = GetColorValue(tbLEDRed.Text); // Convert the Red Color
-            byte greenColor = GetColorValue(tbLEDGreen.Text); // Convert the Green Color
-            byte blueColor = GetColorValue(tbLEDBlue.Text); // Convert the Blue Color
 
             // Update the Key Color with the new values
             keyColor.r = redColor; // Update the red channel
@@ -338,13 +353,10 @@ namespace WpfAlniCoolerMaster
             // Normailize the colors incase of a non-RGB LED device
             keyColor = NormalizeColors(keyColor);
 
-            // Update the LED Color textboxes with the udpated color values
-            tbLEDRed.Text = keyColor.r.ToString();
-            tbLEDGreen.Text = keyColor.g.ToString();
-            tbLEDBlue.Text = keyColor.b.ToString();
-
             // Set the Color of the key with the new Key Color
             colorMatrix.KeyColor[row][column] = keyColor;
+
+            return keyColor;
         }
 
         /// <summary>
@@ -731,6 +743,22 @@ namespace WpfAlniCoolerMaster
             {
                 LoadDeviceSettings(deviceSettings);
             }
+        }
+
+        private void ColorPickerLED_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<System.Windows.Media.Color?> e)
+        {
+            System.Windows.Media.Color currColor = clrPickerLED.SelectedColor.Value;
+            bool isSingleColor = IsSingleColorLed(this.currDevice);
+            if (isSingleColor)
+            {
+                currColor.G = currColor.R;
+                currColor.B = currColor.R;
+                currColor.A = 128;
+
+                clrPickerLED.SelectedColor = currColor;
+            }
+
+            Sharp_SDK.KEY_COLOR keyColor = SetCurrentKeyColor(currColor.R, currColor.G, currColor.B);
         }
     }
 }

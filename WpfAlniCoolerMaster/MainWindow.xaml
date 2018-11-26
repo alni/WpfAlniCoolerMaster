@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:WpfAlniCoolerMaster"
         mc:Ignorable="d"
         Title="MainWindow" Height="730" Width="587" MinWidth="607" MinHeight="740" SizeToContent="WidthAndHeight" Margin="0" Padding="0" Closing="Window_Closing">
@@ -103,6 +104,7 @@
                     <ComboBoxItem Content="22"/>
                     <ComboBoxItem Content="23"/>
                 </ComboBox>
+                <xctk:ColorPicker x:Name="clrPickerLED"  HorizontalAlignment="Left" Margin="370,45,0,0" VerticalAlignment="Top" Width="60" Height="26" ColorMode="ColorCanvas" SelectedColorChanged="ColorPickerLED_SelectedColorChanged" ></xctk:ColorPicker>
                 <Label x:Name="lblLedRed" Content="R:" HorizontalAlignment="Left" Margin="10,45,0,0" VerticalAlignment="Top" Width="40" Height="26" HorizontalContentAlignment="Right" />
                 <TextBox x:Name="tbLEDRed" HorizontalAlignment="Left" Height="23" Margin="50,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="57"  PreviewTextInput="NumberValidationTextBox" TextChanged="TextBoxLED_TextChanged"/>
                 <Label Content="G:" HorizontalAlignment="Left" Margin="152,45,0,0" VerticalAlignment="Top" Height="26" Width="21"/>
