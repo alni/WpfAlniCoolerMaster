@@ -150,21 +150,21 @@ namespace WpfAlniCoolerMaster
             bool isSingleColor = IsSingleColorLed(selectedDevice);
 
             // Only enable Green and Blue color textboxes if RGB LEDs
-            tbLEDGreen.IsEnabled = !isSingleColor;
-            tbLEDBlue.IsEnabled = !isSingleColor;
-            tbLEDGreen_All.IsEnabled = !isSingleColor;
-            tbLEDBlue_All.IsEnabled = !isSingleColor;
+            //tbLEDGreen.IsEnabled = !isSingleColor;
+            //tbLEDBlue.IsEnabled = !isSingleColor;
+            //tbLEDGreen_All.IsEnabled = !isSingleColor;
+            //tbLEDBlue_All.IsEnabled = !isSingleColor;
             if (isSingleColor)
             {
                 // Change the Red color labels to Brightness content with single color LEDs
-                lblLedRed.Content = "BRT:"; // Brightness
-                lblLedRed_All.Content = "BRT:"; // Brightness
+                lblLed.Content = "BRT:"; // Brightness
+                lblLed_All.Content = "BRT:"; // Brightness
             }
             else
             {
                 // Revert toe Red color lables to Red content with RGB LEDs
-                lblLedRed.Content = "R:";
-                lblLedRed_All.Content = "R:";
+                lblLed.Content = "Color:";
+                lblLed_All.Content = "Color:";
             }
 
             currDevice = selectedDevice;
@@ -286,9 +286,13 @@ namespace WpfAlniCoolerMaster
         private void ButtonSetFullKeyColor_Click(object sender, RoutedEventArgs e)
         {
             // Setting the the same color for all the each keys (only available when LED Control is enabled)
-            byte redColor = GetColorValue(tbLEDRed_All.Text);
-            byte greenColor = GetColorValue(tbLEDGreen_All.Text);
-            byte blueColor = GetColorValue(tbLEDBlue_All.Text);
+            //byte redColor = GetColorValue(tbLEDRed_All.Text);
+            //byte greenColor = GetColorValue(tbLEDGreen_All.Text);
+            //byte blueColor = GetColorValue(tbLEDBlue_All.Text);
+
+            byte redColor = keyColorAll.r;
+            byte greenColor = keyColorAll.g;
+            byte blueColor = keyColorAll.b;
 
             Sharp_SDK.KEY_COLOR keyColor = new Sharp_SDK.KEY_COLOR(redColor, greenColor, blueColor);
             keyColor = NormalizeColors(keyColor);
@@ -319,12 +323,12 @@ namespace WpfAlniCoolerMaster
         // Text Changes to the LED color textboxes
         private void TextBoxLED_TextChanged(object sender, TextChangedEventArgs e)
         {
-            Sharp_SDK.KEY_COLOR keyColor = SetCurrentKeyColor(tbLEDRed.Text, tbLEDGreen.Text, tbLEDBlue.Text);
+            //Sharp_SDK.KEY_COLOR keyColor = SetCurrentKeyColor(tbLEDRed.Text, tbLEDGreen.Text, tbLEDBlue.Text);
 
             // Update the LED Color textboxes with the udpated color values
-            tbLEDRed.Text = keyColor.r.ToString();
-            tbLEDGreen.Text = keyColor.g.ToString();
-            tbLEDBlue.Text = keyColor.b.ToString();
+            //tbLEDRed.Text = keyColor.r.ToString();
+            //tbLEDGreen.Text = keyColor.g.ToString();
+            //tbLEDBlue.Text = keyColor.b.ToString();
         }
 
         private Sharp_SDK.KEY_COLOR SetCurrentKeyColor(string strRedColor, string strGreenColor, string strBlueColor)
@@ -441,12 +445,12 @@ namespace WpfAlniCoolerMaster
         private void TextBoxLED_TextChanged_All(object sender, TextChangedEventArgs e)
         {
             // Convert the text of the LED color textboxes to a valid color value
-            byte redColor = GetColorValue(tbLEDRed_All.Text);
-            byte greenColor = GetColorValue(tbLEDGreen_All.Text);
-            byte blueColor = GetColorValue(tbLEDBlue_All.Text);
+            //byte redColor = GetColorValue(tbLEDRed_All.Text);
+            //byte greenColor = GetColorValue(tbLEDGreen_All.Text);
+            //byte blueColor = GetColorValue(tbLEDBlue_All.Text);
 
             // Update the Key Color for all keys with the new values
-            UpdateAllLEDColor(redColor, greenColor, blueColor);
+            //UpdateAllLEDColor(redColor, greenColor, blueColor);
         }
 
         /// <summary>
@@ -485,9 +489,9 @@ namespace WpfAlniCoolerMaster
             keyColor = NormalizeColors(keyColor);
 
             // Update the LED Color textboxes with the udpated color values
-            tbLEDRed_All.Text = keyColor.r.ToString();
-            tbLEDGreen_All.Text = keyColor.g.ToString();
-            tbLEDBlue_All.Text = keyColor.b.ToString();
+            //tbLEDRed_All.Text = keyColor.r.ToString();
+            //tbLEDGreen_All.Text = keyColor.g.ToString();
+            //tbLEDBlue_All.Text = keyColor.b.ToString();
 
             // Update the LED Color Picker value
             System.Windows.Media.Color currColor = (System.Windows.Media.Color)clrPickerLED_All.SelectedColor;
@@ -529,9 +533,9 @@ namespace WpfAlniCoolerMaster
                 keyColor = NormalizeColors(keyColor);
 
                 // Update the Key LED Color textboxes with the new values
-                tbLEDRed.Text = keyColor.r.ToString("F0"); // Update the Red channel
-                tbLEDGreen.Text = keyColor.g.ToString("F0"); // Update the Green channel
-                tbLEDBlue.Text = keyColor.b.ToString("F0"); // Update the Blue channel
+                //tbLEDRed.Text = keyColor.r.ToString("F0"); // Update the Red channel
+                //tbLEDGreen.Text = keyColor.g.ToString("F0"); // Update the Green channel
+                //tbLEDBlue.Text = keyColor.b.ToString("F0"); // Update the Blue channel
 
                 // Update the Key LED Color Picker value
                 System.Windows.Media.Color currColor = (System.Windows.Media.Color)clrPickerLED.SelectedColor;
