@@ -1,4 +1,4 @@
-﻿<Window x:Class="WpfAlniCoolerMaster.MainWindow"
+<Window x:Class="WpfAlniCoolerMaster.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -104,6 +104,7 @@
                     <ComboBoxItem Content="22"/>
                     <ComboBoxItem Content="23"/>
                 </ComboBox>
+                <CheckBox x:Name="checkboxGetKeyRowColumn" Content="Get Row and Column" HorizontalAlignment="Left" Margin="365,15,0,0" VerticalAlignment="Top" Checked="CheckboxGetKeyRowColumn_Checked" Unchecked="CheckboxGetKeyRowColumn_Unchecked"/>
                 <xctk:ColorPicker x:Name="clrPickerLED"  HorizontalAlignment="Left" Margin="50,45,0,0" VerticalAlignment="Top" Width="120" Height="26" ColorMode="ColorCanvas" SelectedColorChanged="ColorPickerLED_SelectedColorChanged" SelectedColor="#FF000000" ></xctk:ColorPicker>
                 <Label x:Name="lblLed" Content="Color:" HorizontalAlignment="Left" Margin="0,45,0,0" VerticalAlignment="Top" Width="50" Height="26" HorizontalContentAlignment="Right" />
                 <Button x:Name="btnLEDSingleKey" Content="Set Single Key" HorizontalAlignment="Left" Margin="190,48,0,0" VerticalAlignment="Top" Width="90" Click="ButtonSetSingleKeyColor_Click" Height="20"/>

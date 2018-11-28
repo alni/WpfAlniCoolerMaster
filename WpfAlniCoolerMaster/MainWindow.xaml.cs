@@ -29,6 +29,9 @@ namespace WpfAlniCoolerMaster
 
         private Sharp_SDK.DEVICE_INDEX currDevice;
 
+        private Sharp_SDK.SDK.KEY_CALLBACK keyCallback;
+        private Sharp_SDK.SDK.KEY_CALLBACK getKeyRowColumnCallback;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -53,6 +56,8 @@ namespace WpfAlniCoolerMaster
             //Sharp_SDK.SDK.SetControlDevice(Sharp_SDK.DEVICE_INDEX.DEV_MKeys_M_White);
             initialized = true;
             lastActiveProcess = (ActiveProcess.GetActiveProcessFileName() + ".exe").ToLower();
+            this.keyCallback = KeyCallback;
+            this.getKeyRowColumnCallback = GetKeyRowColumnKeyCallback;
         }
 
         private void SetSysInfoTimer()
@@ -306,12 +311,19 @@ namespace WpfAlniCoolerMaster
 
         private void CheckboxKeyEffect_Checked(object sender, RoutedEventArgs e)
         {
-
+            Sharp_SDK.SDK.SetKeyCallBack(this.keyCallback);
+            Sharp_SDK.SDK.EnableKeyInterrupt(true);
         }
 
         private void CheckboxKeyEffect_Unchecked(object sender, RoutedEventArgs e)
         {
+            Sharp_SDK.SDK.SetKeyCallBack(null);
+            Sharp_SDK.SDK.EnableKeyInterrupt(false);
+        }
 
+        static void KeyCallback(int iRow, int iColumn, bool bPressed)
+        {
+            Console.WriteLine(iRow + ":" + iColumn + " | " + bPressed);
         }
 
         // TODO: Rename function to "ButtonCPUStatus_Click"
@@ -800,6 +812,34 @@ namespace WpfAlniCoolerMaster
                 // Update the Key Color for all keys with the new values
                 UpdateAllLEDColor(currColor.R, currColor.G, currColor.B);
             }
+        }
+
+        void GetKeyRowColumnKeyCallback(int iRow, int iColumn, bool bPressed)
+        {
+            Console.WriteLine(iRow + ":" + iColumn + " | " + bPressed);
+            if (bPressed == false)
+            {
+                // Key Up
+                Dispatcher.BeginInvoke(new Action(() => SetSelectedLEDRowAndColumn(iRow, iColumn)));
+            }
+        }
+
+        private void SetSelectedLEDRowAndColumn(int row, int column)
+        {
+            cbLEDRow.SelectedIndex = row + 0;
+            cbLEDColumn.SelectedIndex = column + 0;
+        }
+
+        private void CheckboxGetKeyRowColumn_Checked(object sender, RoutedEventArgs e)
+        {
+            Sharp_SDK.SDK.SetKeyCallBack(this.getKeyRowColumnCallback);
+            Sharp_SDK.SDK.EnableKeyInterrupt(true);
+        }
+
+        private void CheckboxGetKeyRowColumn_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Sharp_SDK.SDK.SetKeyCallBack(null);
+            Sharp_SDK.SDK.EnableKeyInterrupt(false);
         }
     }
 }
