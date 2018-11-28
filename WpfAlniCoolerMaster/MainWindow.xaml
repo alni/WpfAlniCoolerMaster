@@ -158,7 +158,7 @@
                 <Button Content="Load Profile" HorizontalAlignment="Left" Margin="323,10,0,0" VerticalAlignment="Top" Width="75" Click="ButtonProfileLoad_Click" Grid.Column="1" Height="20"/>
                 <Label Content="Bind Profile to EXE:" HorizontalAlignment="Left" Margin="81,38,0,0" VerticalAlignment="Top" Width="112" Grid.Column="1" Height="26"/>
                 <TextBox x:Name="tbProfileExe" HorizontalAlignment="Left" Height="23" Margin="198,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Grid.Column="1"/>
-                <Button Content="Bind Profile" HorizontalAlignment="Left" Margin="323,41,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1" Height="20"/>
+                <Button Content="Bind Profile" HorizontalAlignment="Left" Margin="323,41,0,0" VerticalAlignment="Top" Width="75" Grid.Column="1" Height="20" Click="ButtonProfileBind_Click"/>
 
 
 
