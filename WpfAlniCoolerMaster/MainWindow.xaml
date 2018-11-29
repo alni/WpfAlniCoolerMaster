@@ -51,7 +51,7 @@
                 <ComboBoxItem Content="Rain Drop"/>
 
                 <ComboBoxItem Content="Star Effect"/>
-                <ComboBoxItem Content="Gane Snake"/>
+                <ComboBoxItem Content="Game Snake"/>
                 <ComboBoxItem Content="Customization"/>
                 <ComboBoxItem Content="Indicator"/>
                 <ComboBoxItem Content="Fireball"/>

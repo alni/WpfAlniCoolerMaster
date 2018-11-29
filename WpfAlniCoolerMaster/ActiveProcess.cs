@@ -18,8 +18,8 @@ namespace WpfAlniCoolerMaster
         public static string GetActiveProcessFileName()
         {
             IntPtr hwnd = GetForegroundWindow();
-            uint pid;
-            GetWindowThreadProcessId(hwnd, out pid);
+            // Declare _out_ variable inlined (see: https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-7#out-variables)
+            GetWindowThreadProcessId(hwnd, out uint pid); 
             Process p = Process.GetProcessById((int)pid);
             return p.ProcessName;
             //p.MainModule.FileName.Dump();
