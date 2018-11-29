@@ -321,9 +321,37 @@ namespace WpfAlniCoolerMaster
             Sharp_SDK.SDK.EnableKeyInterrupt(false);
         }
 
-        static void KeyCallback(int iRow, int iColumn, bool bPressed)
+        void KeyCallback(int iRow, int iColumn, bool bPressed)
         {
             Console.WriteLine(iRow + ":" + iColumn + " | " + bPressed);
+
+            if (this.ledControlEnabled == true)
+            {
+                Sharp_SDK.DEVICE_INDEX devIndex = (Sharp_SDK.DEVICE_INDEX)currDevice;
+                if (devIndex == Sharp_SDK.DEVICE_INDEX.DEV_MMouse_L)
+                {
+                    if (iColumn > 3)
+                    {
+                        iColumn = 3;
+                    }
+                }
+                // TODO: Add "MM520" and MM530" to DEVICE_INDEX in the SDK Wrapper (and then enable the code below)
+                /*else if (devIndex == Sharp_SDK.DEVICE_INDEX.MM520 || devIndex == Sharp_SDK.DEVICE_INDEX.MM530)
+                {
+                    if (iColumn > 2)
+                    {
+                        iColumn = 2;
+                    }
+                }*/
+                if (bPressed)
+                {
+                    Sharp_SDK.SDK.SetLedColor(iRow, iColumn, 255, 0, 0);
+                }
+                else
+                {
+                    Sharp_SDK.SDK.SetLedColor(iRow, iColumn, 0, 0, 0);
+                }
+            }
         }
 
         // TODO: Rename function to "ButtonCPUStatus_Click"
