@@ -28,6 +28,7 @@ namespace WpfAlniCoolerMaster
         private bool initialized = false;
 
         private Sharp_SDK.DEVICE_INDEX currDevice;
+        private Sharp_SDK.EFF_INDEX currEffect;
 
         private Sharp_SDK.SDK.KEY_CALLBACK keyCallback;
         private Sharp_SDK.SDK.KEY_CALLBACK getKeyRowColumnCallback;
@@ -227,11 +228,20 @@ namespace WpfAlniCoolerMaster
         {
             // Setting the current LED Effect (only available when LED Control is disabled)
             Sharp_SDK.EFF_INDEX effIndex = (Sharp_SDK.EFF_INDEX)cbLEDEffectChoose.SelectedIndex;
-            bool success = Sharp_SDK.SDK.SwitchLedEffect(effIndex);
-            if (success == false)
+            SetLedEffect(effIndex);
+        }
+
+        private void SetLedEffect(Sharp_SDK.EFF_INDEX effIndex)
+        {
+            if (this.ledControlEnabled == false)
             {
-                MessageBox.Show("No Effect or Fail");
+                bool success = Sharp_SDK.SDK.SwitchLedEffect(effIndex);
+                if (success == false)
+                {
+                    MessageBox.Show("No Effect or Fail");
+                }
             }
+            currEffect = effIndex;
         }
 
         /// <summary>
@@ -549,6 +559,7 @@ namespace WpfAlniCoolerMaster
         {
             // Disable the LED Control when closing the window (revert changes to the LED colors)
             Sharp_SDK.SDK.EnableLedControl(false);
+            Sharp_SDK.SDK.SwitchLedEffect(Sharp_SDK.EFF_INDEX.EFF_FULL_ON); // Revert to "Full On"
         }
 
         // Save the Default Settings
@@ -560,6 +571,7 @@ namespace WpfAlniCoolerMaster
                 // Simplified initialization
                 ColorMatrix = colorMatrix, // Store the current Colors set for each key
                 KeyColorAll = keyColorAll, // Store the current Key Color for All keys
+                SelectedEffect = currEffect, // Store the current Effect
                 BoundExe = null // No bound process/EXE for default Device Settings
             };
 
@@ -585,8 +597,10 @@ namespace WpfAlniCoolerMaster
                 }
                 keyColorAll = deviceSettings.KeyColorAll; // Load the current Key Color for All keys
                 currDevice = deviceSettings.SelectedDevice;
+                currEffect = deviceSettings.SelectedEffect;
 
                 cbDeviceSelect.SelectedIndex = (int)currDevice;
+                cbLEDEffectChoose.SelectedIndex = (int)currEffect;
             }
 
             // No bound process/EXE for default Device Settings
@@ -601,6 +615,7 @@ namespace WpfAlniCoolerMaster
             UpdateAllLEDColor();
 
             SetDevice(currDevice);
+            SetLedEffect(currEffect);
         }
 
         private void ButtonProfileSave_Click(object sender, RoutedEventArgs e)
@@ -612,7 +627,8 @@ namespace WpfAlniCoolerMaster
             {
                 // Simplified initialization
                 ColorMatrix = colorMatrix, // Store the current Colors set for each key
-                KeyColorAll = keyColorAll // Store the current Key Color for All keys
+                KeyColorAll = keyColorAll, // Store the current Key Color for All keys
+                SelectedEffect = currEffect // Store the current Effect
             };
             
             if (String.IsNullOrWhiteSpace(boundExe))
@@ -657,8 +673,10 @@ namespace WpfAlniCoolerMaster
                 }
                 keyColorAll = deviceSettings.KeyColorAll; // Load the current Key Color for All keys
                 currDevice = deviceSettings.SelectedDevice;
+                currEffect = deviceSettings.SelectedEffect;
 
                 cbDeviceSelect.SelectedIndex = (int)currDevice;
+                cbLEDEffectChoose.SelectedIndex = (int)currEffect;
 
                 if (String.IsNullOrWhiteSpace(deviceSettings.BoundExe))
                 {
@@ -678,6 +696,7 @@ namespace WpfAlniCoolerMaster
             UpdateAllLEDColor();
 
             SetDevice(currDevice);
+            SetLedEffect(currEffect);
 
             if (String.IsNullOrWhiteSpace(boundExe))
             {
@@ -710,7 +729,8 @@ namespace WpfAlniCoolerMaster
             {
                 // Simplified initialization
                 ColorMatrix = colorMatrix, // Store the current Colors set for each key
-                KeyColorAll = keyColorAll // Store the current Key Color for All keys
+                KeyColorAll = keyColorAll, // Store the current Key Color for All keys
+                SelectedEffect = currEffect // Store the current Effect
             };
             
             if (String.IsNullOrWhiteSpace(boundExe))

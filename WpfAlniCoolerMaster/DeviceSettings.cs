@@ -7,6 +7,7 @@ namespace WpfAlniCoolerMaster
         public COLOR_MATRIX ColorMatrix;
         public KEY_COLOR KeyColorAll;
         public DEVICE_INDEX SelectedDevice;
+        public EFF_INDEX SelectedEffect;
         public string BoundExe = null;
 
         public DeviceSettings(DEVICE_INDEX device)
@@ -14,6 +15,7 @@ namespace WpfAlniCoolerMaster
             SelectedDevice = device;
             ColorMatrix = new COLOR_MATRIX();
             KeyColorAll = new KEY_COLOR();
+            SelectedEffect = EFF_INDEX.EFF_FULL_ON; // Default to Full On
 
             int maxLEDRow = SDK.MAX_LED_ROW;
             int maxLEDColumn = SDK.MAX_LED_COLUMN;
