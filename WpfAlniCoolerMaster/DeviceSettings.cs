@@ -10,6 +10,12 @@ namespace WpfAlniCoolerMaster
         public EFF_INDEX SelectedEffect;
         public string BoundExe = null;
 
+        public DeviceSettings() : this(DEVICE_INDEX.DEV_DEFAULT)
+        {
+            // Use "DEV_DEFAULT" as default device with the overloaded constructor
+            // https://stackoverflow.com/a/5555741
+        }
+
         public DeviceSettings(DEVICE_INDEX device)
         {
             SelectedDevice = device;

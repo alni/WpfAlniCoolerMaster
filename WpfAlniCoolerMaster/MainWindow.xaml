@@ -65,7 +65,7 @@
             </ComboBox>
             <Button x:Name="btnLedEffect" Content="Set" HorizontalAlignment="Left" Margin="444,75,0,0" VerticalAlignment="Top" Width="75" Click="ButtonLedEffect_Click" IsEnabled="False"/>
         </Grid>
-        <GroupBox Header="Set LED color for every key" Height="99" Margin="10,235,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}">
+        <GroupBox Header="Set LED color for each key" Height="99" Margin="10,235,0,0" VerticalAlignment="Top" Background="{DynamicResource {x:Static SystemColors.InactiveBorderBrushKey}}">
             <Grid Margin="10,0,0,0">
                 <Label Content="Row:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="38" Height="26"/>
                 <ComboBox x:Name="cbLEDRow" HorizontalAlignment="Left" Margin="50,14,0,0" VerticalAlignment="Top" Width="120" Height="22" SelectedIndex="0" SelectionChanged="ComboBoxLED_SelectionChanged">
