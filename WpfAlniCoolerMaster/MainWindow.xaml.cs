@@ -75,8 +75,13 @@ namespace WpfAlniCoolerMaster
 
         private void ASysInfoTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+            Dispatcher.BeginInvoke(new Action(() => GetSysInfo()));
+            CheckBoundProcess();
+        }
+
+        private void CheckBoundProcess()
+        {
             string boundExe = this.deviceSettings.BoundExe;
-            Dispatcher.BeginInvoke(new Action(() => GetSysInfo() ));
             Console.WriteLine(String.IsNullOrWhiteSpace(boundExe) == false);
             if (String.IsNullOrWhiteSpace(boundExe) == false) {
                 string activeProcessFileName = (ActiveProcess.GetActiveProcessFileName() + ".exe").ToLower();
